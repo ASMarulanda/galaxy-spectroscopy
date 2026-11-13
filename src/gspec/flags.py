@@ -13,6 +13,14 @@ row can never be flagged ``ok`` while its own numbers say it is a non-detection.
     A broad component is present *and* the error exceeds 90 % of the flux: the
     line cannot be separated from its neighbour, so ``flux`` is a total or a
     best estimate.
+
+    **This branch is unreachable in the current implementation.** ``nondetection``
+    is tested first, so reaching this line requires ``|F|/σ ≥ 3``, which implies
+    ``σ ≤ |F|/3 < 0.9|F|`` — the two conditions cannot hold together. The value is
+    kept because it is part of the published output contract and because the
+    ordering is inherited from the original implementation; changing it would
+    change outputs. Pinned by
+    ``tests/test_core_identities.py::test_unresolved_blend_is_unreachable_by_construction``.
 ``failed``
     No finite estimate, or a non-positive uncertainty.
 
