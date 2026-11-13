@@ -123,17 +123,65 @@ I01–I04 are produced by `tools/make_injections.py`: the copy and its base shar
 one noise realisation, so for any measurement operator M that is linear enough
 over the increment, `M(copy) − M(base) = F_injected` exactly.
 
-## 5. Storage precision (a limitation, not a detail)
+## 6. Provenance audit (Stage 3)
+
+Every derived truth value in `data/` was re-checked against the raw archive files
+and the public catalogues they came from. The audit ran with the raw files
+available (they are not redistributed; `tools/download_sdss.py` restores them).
+
+| check | result |
+|---|---|
+| raw files vs `data/provenance/sha256_data.txt` | **10 / 10 exact** |
+| `truth_real.json` plate/MJD/fibre vs the `SPECOBJ` extension | **exact, 6 / 6** |
+| `truth_real.json` `z` and `SUBCLASS` vs `SPECOBJ` | **exact, 6 / 6** |
+| `truth_real.json` `lines[*].pipe` vs `SPZLINE.LINEAREA` | **exact, 24 / 24 values** |
+| `truth_real.json` `lines[*].mpa` vs the MPA-JHU catalogue table | **exact, 24 / 24 values** |
+| case FITS `flux` vs the raw `COADD.flux` | **byte-equal, 6 / 6** — the redaction changed no flux value |
+| `truth_injections.json` increments vs 0.40 × the pipeline flux | **exact, 12 / 12** |
+| `S01`–`S10` vs `tools/generate_synthetic.py` | **bit for bit, 10 / 10** (`tests/test_generator.py`) |
+
+So every number in `data/` is reconstructible from public SDSS products: the
+pipeline fluxes from `SPZLINE` in the archive file, the MPA-JHU fluxes from that
+value-added catalogue, the injections as an arithmetic 40 % of the pipeline flux,
+and the synthetic cases from a documented seed.
+
+### Three findings a reader should know
+
+1. **The columns of `data/provenance/sdss_source_picks.csv` are Portsmouth
+   fluxes, not the MPA-JHU values used in the truth manifests.** Verified: its
+   `Flux_Ha_6562` equals the Portsmouth `por_Ha` value exactly for every case it
+   covers, and it does **not** equal either the pipeline or the MPA value — for
+   R01 it is 2145.3 against 812.8 (pipeline) and 700.2 (MPA), a factor 2.6–3.1.
+   This is the same anomaly recorded in the project's history as "Portsmouth Hα
+   ≈ 2.4× high", now localised to a column name that does not say so. Read the
+   table as the Phase-1 *reconnaissance* record, not as a flux reference.
+2. **That table covers 8 of the 10 objects.** `968/11` (case **R05**, the
+   broad-line AGN) and `1238/229` (an object that did not enter the benchmark)
+   are absent. Nothing in the repository depends on it, but a reader should not
+   assume it is complete.
+3. **Withholding `truth_real.json` does not withhold the identities or the
+   redshifts, because they are already published elsewhere in the repository:**
+   `data/provenance/sdss_source_picks.csv` carries plate/MJD/fibre for
+   **5 of the 6** real cases (R01–R04 and R06), and
+   `validation/results/tables/archival_redshift.csv` carries the archive redshift
+   for **all six**. What `truth_real.json` would add publicly is the identity of
+   R05 and the pipe/MPA flux values quoted in the validation tables. That is a
+   decision for the release review, not a data-protection question.
+
+## 7. Storage precision (a limitation, not a detail)
 
 All `COADD` columns are stored as **float32** (`format='E'`). The spectra
 therefore carry ~1e-7 relative quantization, and no reproducibility claim
 tighter than ~1e-6 relative can be tested against these files. The pipeline
 computes in float64; the input precision is the binding constraint.
 
-## 6. Checklist before any public release
+## 8. Checklist before any public release
 
 - [ ] Re-confirm the SDSS acknowledgment wording current at the time of release
       (SDSS updates it per survey phase) and re-quote it verbatim.
-- [ ] Decide the status of `data/truth/truth_real.json` (identity map).
-- [ ] Record the SHA-256 of the frozen upstream project this repository was
-      migrated from.
+- [ ] Decide the status of `data/truth/truth_real.json` (identity map and
+      catalogue values) in the light of §6 finding 3.
+- [ ] Decide whether to ship `data/provenance/case_provenance.csv`, a per-case
+      source table (plate/MJD/fibre, archive z, pipeline and MPA fluxes) which
+      would let a reader reproduce the audit in §6 without the frozen project.
+      It is **not** shipped at this stage.
