@@ -48,4 +48,5 @@ addopts = "-q --strict-markers"
 markers = [
   "slow: takes more than ~10 s (the full 20-case fit)",
   "experiment: a controlled experiment, not part of the default pipeline",
+  "characterisation: pins a measured value, so a change is a change in the science",
 ]

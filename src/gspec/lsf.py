@@ -24,7 +24,8 @@ import numpy as np
 from . import constants as K
 
 
-def sigma_pix(mu: float, sigma_v_kms: float, wdisp: np.ndarray, dlam: np.ndarray) -> np.ndarray:
+def sigma_pix(mu: float, sigma_v_kms: float,
+              wdisp: float | np.ndarray, dlam: float | np.ndarray) -> float | np.ndarray:
     """Observed width in pixels for a component at observed wavelength ``mu``.
 
     Parameters

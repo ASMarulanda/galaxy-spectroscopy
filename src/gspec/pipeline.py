@@ -59,6 +59,7 @@ def measure_fixed_model(
     case: Case,
     model: ModelConfig,
     z_known: float | None = None,
+    keep_jacobian: bool = False,
 ) -> SpectrumResult:
     """Fit one configuration with no model selection at all.
 
@@ -66,7 +67,7 @@ def measure_fixed_model(
     was asked for, so a difference between two results cannot be attributed to
     the selection step.
     """
-    return fit_case(case, z_init=z_known, config=model)
+    return fit_case(case, z_init=z_known, config=model, keep_jacobian=keep_jacobian)
 
 
 def measure_file(path: str | Path, **kwargs) -> SpectrumResult:
