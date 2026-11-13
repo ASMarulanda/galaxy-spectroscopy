@@ -29,6 +29,13 @@ Differential recovery on 4 real spectra with a line of exactly known flux
 injected: 12 / 12 comparisons pass, Hα to 1–3 %.
 Uncertainties: pull RMS **1.08** over 52 graded points.
 
+**Independently validated.** A separately written program
+(`validation/independent/`, RBF continuum, bounded optimiser, bootstrap, no shared
+estimator) reproduces the redshift on **20/20** spectra to a median of 6.5 km/s,
+and Hα and [N II] to **0.8 % and 0.2 %** median difference. It does **not**
+reproduce Hβ: the two methods differ by a median of 17.5 %, and the truth lies
+between them on 10 of 10 synthetic cases. See `validation/report.md` §5.
+
 The worst-case column is not a failure — on those rows the reported σ is itself
 large and carries the tolerance — but "passes" is weaker than "accurate", which
 is why `validation/report.md` pins the medians instead.
@@ -36,9 +43,10 @@ is why `validation/report.md` pins the medians instead.
 ## What this does not prove
 
 * **Hβ is the weak link.** Median −14.4 %, and the independent implementation
-  written for this project gets +18.6 % on the same data. The 20 % floor is an
-  *admission threshold*, not an accuracy claim, and this repository does not
-  claim Hβ to 20 %.
+  written for this project gets +18.1 % on the same data — the two bracket the
+  truth on every case and agree with each other only to 17.5 % median. The 20 %
+  band used in the original validation was an *admission threshold*, not an
+  accuracy claim, and this repository does not claim Hβ to 20 %.
 * **The stellar-absorption model is not shown to help.** The BIC selection
   rejects it on all ten synthetic spectra, and forcing it on makes Hβ *worse*
   (−11.1 % → +19.6 %). See `validation/experiments/FINDINGS.md`.
@@ -103,7 +111,7 @@ Derivation, bounds and failure modes: **`docs/methods.md`**.
 ## Validate
 
 ```bash
-pytest                     # 59 tests, ~80 s
+pytest                     # 82 tests, ~230 s
 ```
 
 The tests are written against analytic truth and exact increments, not against
@@ -126,7 +134,7 @@ and are neither.
 src/gspec/       the package: constants → io → redshift → fit → fluxes → flags
 data/            20 case FITS + truth manifests + provenance
 tools/           generator, injection builder, SDSS downloader
-tests/           59 tests, one per scientific failure mode
+tests/           82 tests, one per scientific failure mode
 validation/      baseline, independent implementation, report, experiments
 docs/            methods · limitations · validation history · decision log
 ```
