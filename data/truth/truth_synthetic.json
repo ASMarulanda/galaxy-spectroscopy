@@ -1,0 +1,848 @@
+{
+ "S01": {
+  "case_id": "S01",
+  "continuum": {
+   "abs_scale": 0.6702019187543398,
+   "basis": "3 power laws x multiplicative stellar absorption (single scale factor, tied Balmer pattern)",
+   "norm": 4.321718356693191,
+   "sigma_stellar_kms": 248.78659738083175
+  },
+  "generator_self_test_max_rel_error": 8.799988917316013e-09,
+  "klass": "synthetic",
+  "lambda_range_observed": [
+   3799.9999999999995,
+   9199.999999999996
+  ],
+  "lines": {
+   "Halpha": {
+    "components": [
+     {
+      "flux": 900.0,
+      "rest": 6564.61,
+      "sigma_kms": 85.0,
+      "sigma_obs_ang": 2.3870452108919227
+     }
+    ],
+    "flux": 900.0,
+    "flux_snr_expected": 30240.122531545698,
+    "has_broad": false,
+    "sigma_kms_narrow": 85.0
+   },
+   "Hbeta": {
+    "components": [
+     {
+      "flux": 315.7894736842105,
+      "rest": 4862.68,
+      "sigma_kms": 85.0,
+      "sigma_obs_ang": 1.7098651390427362
+     }
+    ],
+    "flux": 315.7894736842105,
+    "flux_snr_expected": 4686.170085671807,
+    "has_broad": false,
+    "sigma_kms_narrow": 85.0
+   },
+   "NII_6583": {
+    "components": [
+     {
+      "flux": 288.0,
+      "rest": 6585.27,
+      "sigma_kms": 85.0,
+      "sigma_obs_ang": 2.3954602073225586
+     }
+    ],
+    "flux": 288.0,
+    "flux_snr_expected": 9766.172024933718,
+    "has_broad": false,
+    "sigma_kms_narrow": 85.0
+   },
+   "OIII_5007": {
+    "components": [
+     {
+      "flux": 142.10526315789474,
+      "rest": 5008.24,
+      "sigma_kms": 87.7195225949578,
+      "sigma_obs_ang": 1.8061774255673646
+     }
+    ],
+    "flux": 142.10526315789474,
+    "flux_snr_expected": 2165.263049262286,
+    "has_broad": false,
+    "sigma_kms_narrow": 85.0
+   }
+  },
+  "n_pixels": 3849,
+  "noise": {
+   "bad_pixel_fraction": 0.0,
+   "exponent": 0.4,
+   "snr_at_6000": 30.0
+  },
+  "seed": 20271113,
+  "z": 0.04
+ },
+ "S02": {
+  "case_id": "S02",
+  "continuum": {
+   "abs_scale": 0.9270992055682471,
+   "basis": "3 power laws x multiplicative stellar absorption (single scale factor, tied Balmer pattern)",
+   "norm": 23.410318185389443,
+   "sigma_stellar_kms": 224.35298485722893
+  },
+  "generator_self_test_max_rel_error": 8.800011041135544e-09,
+  "klass": "synthetic",
+  "lambda_range_observed": [
+   3799.9999999999995,
+   9199.999999999996
+  ],
+  "lines": {
+   "Halpha": {
+    "components": [
+     {
+      "flux": 420.0,
+      "rest": 6564.61,
+      "sigma_kms": 110.0,
+      "sigma_obs_ang": 2.9354307923394125
+     }
+    ],
+    "flux": 420.0,
+    "flux_snr_expected": 2004.112480349912,
+    "has_broad": false,
+    "sigma_kms_narrow": 110.0
+   },
+   "Hbeta": {
+    "components": [
+     {
+      "flux": 135.48387096774192,
+      "rest": 4862.68,
+      "sigma_kms": 110.0,
+      "sigma_obs_ang": 2.124404577448907
+     }
+    ],
+    "flux": 135.48387096774192,
+    "flux_snr_expected": 312.60050714867333,
+    "has_broad": false,
+    "sigma_kms_narrow": 110.0
+   },
+   "NII_6583": {
+    "components": [
+     {
+      "flux": 176.4,
+      "rest": 6585.27,
+      "sigma_kms": 110.0,
+      "sigma_obs_ang": 2.9454467549973518
+     }
+    ],
+    "flux": 176.4,
+    "flux_snr_expected": 848.8215008491095,
+    "has_broad": false,
+    "sigma_kms_narrow": 110.0
+   },
+   "OIII_5007": {
+    "components": [
+     {
+      "flux": 243.87096774193546,
+      "rest": 5008.24,
+      "sigma_kms": 118.11335688325794,
+      "sigma_obs_ang": 2.321802280423636
+     }
+    ],
+    "flux": 243.87096774193546,
+    "flux_snr_expected": 568.8706975748996,
+    "has_broad": false,
+    "sigma_kms_narrow": 110.0
+   }
+  },
+  "n_pixels": 3849,
+  "noise": {
+   "bad_pixel_fraction": 0.0,
+   "exponent": 0.4,
+   "snr_at_6000": 22.0
+  },
+  "seed": 20281120,
+  "z": 0.0625
+ },
+ "S03": {
+  "case_id": "S03",
+  "continuum": {
+   "abs_scale": 0.860084800072474,
+   "basis": "3 power laws x multiplicative stellar absorption (single scale factor, tied Balmer pattern)",
+   "norm": 33.43222870333344,
+   "sigma_stellar_kms": 235.03332246419933
+  },
+  "generator_self_test_max_rel_error": 8.799958532808188e-09,
+  "klass": "synthetic",
+  "lambda_range_observed": [
+   3799.9999999999995,
+   9199.999999999996
+  ],
+  "lines": {
+   "Halpha": {
+    "components": [
+     {
+      "flux": 260.0,
+      "rest": 6564.61,
+      "sigma_kms": 95.0,
+      "sigma_obs_ang": 2.5233476116248
+     }
+    ],
+    "flux": 260.0,
+    "flux_snr_expected": 583.5666715185714,
+    "has_broad": false,
+    "sigma_kms_narrow": 95.0
+   },
+   "Hbeta": {
+    "components": [
+     {
+      "flux": 76.47058823529412,
+      "rest": 4862.68,
+      "sigma_kms": 95.0,
+      "sigma_obs_ang": 1.8167917044449802
+     }
+    ],
+    "flux": 76.47058823529412,
+    "flux_snr_expected": 76.88760886559967,
+    "has_broad": false,
+    "sigma_kms_narrow": 95.0
+   },
+   "NII_6583": {
+    "components": [
+     {
+      "flux": 65.0,
+      "rest": 6585.27,
+      "sigma_kms": 95.0,
+      "sigma_obs_ang": 2.5321013833219337
+     }
+    ],
+    "flux": 65.0,
+    "flux_snr_expected": 147.14106758086393,
+    "has_broad": false,
+    "sigma_kms_narrow": 95.0
+   },
+   "OIII_5007": {
+    "components": [
+     {
+      "flux": 61.1764705882353,
+      "rest": 5008.24,
+      "sigma_kms": 101.67308157007062,
+      "sigma_obs_ang": 1.975191286632466
+     }
+    ],
+    "flux": 61.1764705882353,
+    "flux_snr_expected": 63.137506876245254,
+    "has_broad": false,
+    "sigma_kms_narrow": 95.0
+   }
+  },
+  "n_pixels": 3849,
+  "noise": {
+   "bad_pixel_fraction": 0.01,
+   "exponent": 0.4,
+   "snr_at_6000": 15.0
+  },
+  "seed": 20291127,
+  "z": 0.021
+ },
+ "S04": {
+  "case_id": "S04",
+  "continuum": {
+   "abs_scale": 1.321981778513951,
+   "basis": "3 power laws x multiplicative stellar absorption (single scale factor, tied Balmer pattern)",
+   "norm": 33.81545503616198,
+   "sigma_stellar_kms": 236.25000000000003
+  },
+  "generator_self_test_max_rel_error": 8.7999806434406e-09,
+  "klass": "synthetic",
+  "lambda_range_observed": [
+   3799.9999999999995,
+   9199.999999999996
+  ],
+  "lines": {
+   "Halpha": {
+    "components": [
+     {
+      "flux": 600.0,
+      "rest": 6564.61,
+      "sigma_kms": 175.0,
+      "sigma_obs_ang": 4.374912984249656
+     }
+    ],
+    "flux": 600.0,
+    "flux_snr_expected": 986.1425130196999,
+    "has_broad": false,
+    "sigma_kms_narrow": 175.0
+   },
+   "Hbeta": {
+    "components": [
+     {
+      "flux": 157.89473684210526,
+      "rest": 4862.68,
+      "sigma_kms": 175.0,
+      "sigma_obs_ang": 3.2061899022850113
+     }
+    ],
+    "flux": 157.89473684210526,
+    "flux_snr_expected": 180.25371486638076,
+    "has_broad": false,
+    "sigma_kms_narrow": 175.0
+   },
+   "NII_6583": {
+    "components": [
+     {
+      "flux": 360.0,
+      "rest": 6585.27,
+      "sigma_kms": 175.0,
+      "sigma_obs_ang": 4.389221519248394
+     }
+    ],
+    "flux": 360.0,
+    "flux_snr_expected": 608.1252481861751,
+    "has_broad": false,
+    "sigma_kms_narrow": 175.0
+   },
+   "OIII_5007": {
+    "components": [
+     {
+      "flux": 150.0,
+      "rest": 5008.24,
+      "sigma_kms": 176.3913481902281,
+      "sigma_obs_ang": 3.329160508225688
+     }
+    ],
+    "flux": 150.0,
+    "flux_snr_expected": 184.7741823287313,
+    "has_broad": false,
+    "sigma_kms_narrow": 175.0
+   }
+  },
+  "n_pixels": 3849,
+  "noise": {
+   "bad_pixel_fraction": 0.01,
+   "exponent": 0.4,
+   "snr_at_6000": 12.0
+  },
+  "seed": 20301134,
+  "z": 0.076
+ },
+ "S05": {
+  "case_id": "S05",
+  "continuum": {
+   "abs_scale": 0.6569763907839579,
+   "basis": "3 power laws x multiplicative stellar absorption (single scale factor, tied Balmer pattern)",
+   "norm": 27.19439470254784,
+   "sigma_stellar_kms": 259.68541745651135
+  },
+  "generator_self_test_max_rel_error": 8.799993692251534e-09,
+  "klass": "synthetic",
+  "lambda_range_observed": [
+   3799.9999999999995,
+   9199.999999999996
+  ],
+  "lines": {
+   "Halpha": {
+    "components": [
+     {
+      "flux": 429.0,
+      "rest": 6564.61,
+      "sigma_kms": 105.0,
+      "sigma_obs_ang": 2.748954285745822
+     },
+     {
+      "flux": 351.0,
+      "rest": 6564.61,
+      "sigma_kms": 520.0,
+      "sigma_obs_ang": 11.843446583999873
+     }
+    ],
+    "flux": 780.0,
+    "flux_snr_expected": 4863.219121534638,
+    "has_broad": true,
+    "sigma_kms_narrow": 105.0
+   },
+   "Hbeta": {
+    "components": [
+     {
+      "flux": 102.14285714285712,
+      "rest": 4862.68,
+      "sigma_kms": 105.0,
+      "sigma_obs_ang": 1.9867573475105802
+     },
+     {
+      "flux": 83.57142857142857,
+      "rest": 4862.68,
+      "sigma_kms": 520.0,
+      "sigma_obs_ang": 8.761575340219476
+     }
+    ],
+    "flux": 185.7142857142857,
+    "flux_snr_expected": 454.6032290397996,
+    "has_broad": true,
+    "sigma_kms_narrow": 105.0
+   },
+   "NII_6583": {
+    "components": [
+     {
+      "flux": 163.02,
+      "rest": 6585.27,
+      "sigma_kms": 105.0,
+      "sigma_obs_ang": 2.7583753288419603
+     }
+    ],
+    "flux": 163.02,
+    "flux_snr_expected": 702.6282438992025,
+    "has_broad": false,
+    "sigma_kms_narrow": 105.0
+   },
+   "OIII_5007": {
+    "components": [
+     {
+      "flux": 111.42857142857142,
+      "rest": 5008.24,
+      "sigma_kms": 105.52113589869376,
+      "sigma_obs_ang": 2.0587810484865146
+     }
+    ],
+    "flux": 111.42857142857142,
+    "flux_snr_expected": 192.30988920629258,
+    "has_broad": false,
+    "sigma_kms_narrow": 105.0
+   }
+  },
+  "n_pixels": 3849,
+  "noise": {
+   "bad_pixel_fraction": 0.0,
+   "exponent": 0.4,
+   "snr_at_6000": 20.0
+  },
+  "seed": 20311141,
+  "z": 0.033
+ },
+ "S06": {
+  "case_id": "S06",
+  "continuum": {
+   "abs_scale": 1.08716405325696,
+   "basis": "3 power laws x multiplicative stellar absorption (single scale factor, tied Balmer pattern)",
+   "norm": 27.907139759691688,
+   "sigma_stellar_kms": 225.99564257484124
+  },
+  "generator_self_test_max_rel_error": 8.799964095689776e-09,
+  "klass": "synthetic",
+  "lambda_range_observed": [
+   3799.9999999999995,
+   9199.999999999996
+  ],
+  "lines": {
+   "Halpha": {
+    "components": [
+     {
+      "flux": 180.0,
+      "rest": 6564.61,
+      "sigma_kms": 120.0,
+      "sigma_obs_ang": 3.118140718064835
+     }
+    ],
+    "flux": 180.0,
+    "flux_snr_expected": 219.17795716717166,
+    "has_broad": false,
+    "sigma_kms_narrow": 120.0
+   },
+   "Hbeta": {
+    "components": [
+     {
+      "flux": 50.0,
+      "rest": 4862.68,
+      "sigma_kms": 120.0,
+      "sigma_obs_ang": 2.2635773627761666
+     }
+    ],
+    "flux": 50.0,
+    "flux_snr_expected": 32.47076030301393,
+    "has_broad": false,
+    "sigma_kms_narrow": 120.0
+   },
+   "NII_6583": {
+    "components": [
+     {
+      "flux": 54.0,
+      "rest": 6585.27,
+      "sigma_kms": 120.0,
+      "sigma_obs_ang": 3.1286731980298392
+     }
+    ],
+    "flux": 54.0,
+    "flux_snr_expected": 66.23852037579924,
+    "has_broad": false,
+    "sigma_kms_narrow": 120.0
+   },
+   "OIII_5007": {
+    "components": [
+     {
+      "flux": 35.0,
+      "rest": 5008.24,
+      "sigma_kms": 130.20977213508903,
+      "sigma_obs_ang": 2.499874754630465
+     }
+    ],
+    "flux": 35.0,
+    "flux_snr_expected": 22.624254860838086,
+    "has_broad": false,
+    "sigma_kms_narrow": 120.0
+   }
+  },
+  "n_pixels": 3849,
+  "noise": {
+   "bad_pixel_fraction": 0.02,
+   "exponent": 0.4,
+   "snr_at_6000": 7.0
+  },
+  "seed": 20321148,
+  "z": 0.0555
+ },
+ "S07": {
+  "case_id": "S07",
+  "continuum": {
+   "abs_scale": 0.9436915678142267,
+   "basis": "3 power laws x multiplicative stellar absorption (single scale factor, tied Balmer pattern)",
+   "norm": 11.570329775727302,
+   "sigma_stellar_kms": 155.25
+  },
+  "generator_self_test_max_rel_error": 8.799991769459486e-09,
+  "klass": "synthetic",
+  "lambda_range_observed": [
+   3799.9999999999995,
+   9199.999999999996
+  ],
+  "lines": {
+   "Halpha": {
+    "components": [
+     {
+      "flux": 427.5,
+      "rest": 6564.61,
+      "sigma_kms": 115.0,
+      "sigma_obs_ang": 3.054346692487371
+     },
+     {
+      "flux": 522.5,
+      "rest": 6564.61,
+      "sigma_kms": 780.0,
+      "sigma_obs_ang": 18.29859319285506
+     }
+    ],
+    "flux": 950.0,
+    "flux_snr_expected": 8012.0623373805165,
+    "has_broad": true,
+    "sigma_kms_narrow": 115.0
+   },
+   "Hbeta": {
+    "components": [
+     {
+      "flux": 77.72727272727272,
+      "rest": 4862.68,
+      "sigma_kms": 115.0,
+      "sigma_obs_ang": 2.2137986857512515
+     },
+     {
+      "flux": 95.0,
+      "rest": 4862.68,
+      "sigma_kms": 780.0,
+      "sigma_obs_ang": 13.546488997085829
+     }
+    ],
+    "flux": 172.72727272727272,
+    "flux_snr_expected": 505.9362967670008,
+    "has_broad": true,
+    "sigma_kms_narrow": 115.0
+   },
+   "NII_6583": {
+    "components": [
+     {
+      "flux": 192.375,
+      "rest": 6585.27,
+      "sigma_kms": 115.0,
+      "sigma_obs_ang": 3.064717126525448
+     }
+    ],
+    "flux": 192.375,
+    "flux_snr_expected": 1048.7185903667119,
+    "has_broad": false,
+    "sigma_kms_narrow": 115.0
+   },
+   "OIII_5007": {
+    "components": [
+     {
+      "flux": 190.0,
+      "rest": 5008.24,
+      "sigma_kms": 113.08834815871755,
+      "sigma_obs_ang": 2.254004193420062
+     }
+    ],
+    "flux": 190.0,
+    "flux_snr_expected": 361.925660787409,
+    "has_broad": false,
+    "sigma_kms_narrow": 115.0
+   }
+  },
+  "n_pixels": 3849,
+  "noise": {
+   "bad_pixel_fraction": 0.01,
+   "exponent": 0.4,
+   "snr_at_6000": 9.0
+  },
+  "seed": 20331155,
+  "z": 0.068
+ },
+ "S08": {
+  "case_id": "S08",
+  "continuum": {
+   "abs_scale": 0.7847450389788049,
+   "basis": "3 power laws x multiplicative stellar absorption (single scale factor, tied Balmer pattern)",
+   "norm": 34.636887882060705,
+   "sigma_stellar_kms": 257.42137796465084
+  },
+  "generator_self_test_max_rel_error": 8.799977781764562e-09,
+  "klass": "synthetic",
+  "lambda_range_observed": [
+   3799.9999999999995,
+   9199.999999999996
+  ],
+  "lines": {
+   "Halpha": {
+    "components": [
+     {
+      "flux": 340.0,
+      "rest": 6564.61,
+      "sigma_kms": 130.0,
+      "sigma_obs_ang": 3.296908093143355
+     }
+    ],
+    "flux": 340.0,
+    "flux_snr_expected": 569.1548995918972,
+    "has_broad": false,
+    "sigma_kms_narrow": 130.0
+   },
+   "Hbeta": {
+    "components": [
+     {
+      "flux": 103.03030303030303,
+      "rest": 4862.68,
+      "sigma_kms": 130.0,
+      "sigma_obs_ang": 2.3994976566105186
+     }
+    ],
+    "flux": 103.03030303030303,
+    "flux_snr_expected": 75.83304049301633,
+    "has_broad": false,
+    "sigma_kms_narrow": 130.0
+   },
+   "NII_6583": {
+    "components": [
+     {
+      "flux": 118.99999999999999,
+      "rest": 6585.27,
+      "sigma_kms": 130.0,
+      "sigma_obs_ang": 3.3079495146473166
+     }
+    ],
+    "flux": 118.99999999999999,
+    "flux_snr_expected": 201.02769400089673,
+    "has_broad": false,
+    "sigma_kms_narrow": 130.0
+   },
+   "OIII_5007": {
+    "components": [
+     {
+      "flux": 226.66666666666669,
+      "rest": 5008.24,
+      "sigma_kms": 136.66169620243673,
+      "sigma_obs_ang": 2.582722650912888
+     }
+    ],
+    "flux": 226.66666666666669,
+    "flux_snr_expected": 198.88305533425117,
+    "has_broad": false,
+    "sigma_kms_narrow": 130.0
+   }
+  },
+  "n_pixels": 3849,
+  "noise": {
+   "bad_pixel_fraction": 0.03,
+   "exponent": 0.4,
+   "snr_at_6000": 10.0
+  },
+  "seed": 20341162,
+  "z": 0.047
+ },
+ "S09": {
+  "case_id": "S09",
+  "continuum": {
+   "abs_scale": 1.302573988586134,
+   "basis": "3 power laws x multiplicative stellar absorption (single scale factor, tied Balmer pattern)",
+   "norm": 20.68564042261577,
+   "sigma_stellar_kms": 224.9267821553048
+  },
+  "generator_self_test_max_rel_error": 8.79999557668043e-09,
+  "klass": "synthetic",
+  "lambda_range_observed": [
+   3799.9999999999995,
+   9199.999999999996
+  ],
+  "lines": {
+   "Halpha": {
+    "components": [
+     {
+      "flux": 90.0,
+      "rest": 6564.61,
+      "sigma_kms": 140.0,
+      "sigma_obs_ang": 3.6259844662242995
+     }
+    ],
+    "flux": 90.0,
+    "flux_snr_expected": 166.0800303564412,
+    "has_broad": false,
+    "sigma_kms_narrow": 140.0
+   },
+   "Hbeta": {
+    "components": [
+     {
+      "flux": 20.0,
+      "rest": 4862.68,
+      "sigma_kms": 140.0,
+      "sigma_obs_ang": 2.64367138003999
+     }
+    ],
+    "flux": 20.0,
+    "flux_snr_expected": 25.781919562849854,
+    "has_broad": false,
+    "sigma_kms_narrow": 140.0
+   },
+   "NII_6583": {
+    "components": [
+     {
+      "flux": 18.0,
+      "rest": 6585.27,
+      "sigma_kms": 140.0,
+      "sigma_obs_ang": 3.6380556896001193
+     }
+    ],
+    "flux": 18.0,
+    "flux_snr_expected": 29.489501824739815,
+    "has_broad": false,
+    "sigma_kms_narrow": 140.0
+   },
+   "OIII_5007": {
+    "components": [
+     {
+      "flux": 10.0,
+      "rest": 5008.24,
+      "sigma_kms": 150.91438574494555,
+      "sigma_obs_ang": 2.9104089701693834
+     }
+    ],
+    "flux": 10.0,
+    "flux_snr_expected": 12.042357050810725,
+    "has_broad": false,
+    "sigma_kms_narrow": 140.0
+   }
+  },
+  "n_pixels": 3849,
+  "noise": {
+   "bad_pixel_fraction": 0.02,
+   "exponent": 0.4,
+   "snr_at_6000": 9.0
+  },
+  "seed": 20351169,
+  "z": 0.081
+ },
+ "S10": {
+  "case_id": "S10",
+  "continuum": {
+   "abs_scale": 1.1655145398120321,
+   "basis": "3 power laws x multiplicative stellar absorption (single scale factor, tied Balmer pattern)",
+   "norm": 7.772322319232075,
+   "sigma_stellar_kms": 216.0
+  },
+  "generator_self_test_max_rel_error": 8.799985254073463e-09,
+  "klass": "synthetic",
+  "lambda_range_observed": [
+   3799.9999999999995,
+   9199.999999999996
+  ],
+  "lines": {
+   "Halpha": {
+    "components": [
+     {
+      "flux": 270.0,
+      "rest": 6564.61,
+      "sigma_kms": 160.0,
+      "sigma_obs_ang": 4.090728762908705
+     },
+     {
+      "flux": 270.0,
+      "rest": 6564.61,
+      "sigma_kms": 650.0,
+      "sigma_obs_ang": 15.556679542963419
+     }
+    ],
+    "flux": 540.0,
+    "flux_snr_expected": 9917.290988376522,
+    "has_broad": true,
+    "sigma_kms_narrow": 160.0
+   },
+   "Hbeta": {
+    "components": [
+     {
+      "flux": 67.5,
+      "rest": 4862.68,
+      "sigma_kms": 160.0,
+      "sigma_obs_ang": 2.992128930540362
+     },
+     {
+      "flux": 67.5,
+      "rest": 4862.68,
+      "sigma_kms": 650.0,
+      "sigma_obs_ang": 11.513534909165292
+     }
+    ],
+    "flux": 135.0,
+    "flux_snr_expected": 1000.8942543561891,
+    "has_broad": true,
+    "sigma_kms_narrow": 160.0
+   },
+   "NII_6583": {
+    "components": [
+     {
+      "flux": 189.0,
+      "rest": 6585.27,
+      "sigma_kms": 160.0,
+      "sigma_obs_ang": 4.104197972014787
+     }
+    ],
+    "flux": 189.0,
+    "flux_snr_expected": 2248.9074044142403,
+    "has_broad": false,
+    "sigma_kms_narrow": 160.0
+   },
+   "OIII_5007": {
+    "components": [
+     {
+      "flux": 472.5,
+      "rest": 5008.24,
+      "sigma_kms": 181.76547894830603,
+      "sigma_obs_ang": 3.4606324556502273
+     }
+    ],
+    "flux": 472.5,
+    "flux_snr_expected": 2574.9406295090703,
+    "has_broad": false,
+    "sigma_kms_narrow": 160.0
+   }
+  },
+  "n_pixels": 3849,
+  "noise": {
+   "bad_pixel_fraction": 0.01,
+   "exponent": 0.4,
+   "snr_at_6000": 14.0
+  },
+  "seed": 20361176,
+  "z": 0.088
+ }
+}

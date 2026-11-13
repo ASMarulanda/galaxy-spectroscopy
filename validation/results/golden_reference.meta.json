@@ -1,0 +1,80 @@
+{
+ "cases_dir": "data/cases",
+ "csv_rows": 80,
+ "csv_sha256": "460913a261a8ebecd88b89d63266c87d0f1ad906c71ff2fa8907d4fb76a2211d",
+ "environment": {
+  "astropy": "7.0.0",
+  "machine": "x86_64",
+  "numpy": "1.26.4",
+  "platform": "Linux-7.0.0-42-generic-x86_64-with-glibc2.39",
+  "python": "3.12.3",
+  "scipy": "1.11.4"
+ },
+ "flag_counts": {
+  "nondetection": 14,
+  "ok": 66
+ },
+ "frozen_common_sha256": "9e74c65973349c87c92d2520f084cacfb70606624fee29466251f30cac88ab0f",
+ "frozen_methods_sha256": "15e4de739b32e06ca4b26c8dc24d6f2ec5674bd984665db589d88c84ebe2294a",
+ "frozen_solution_dir": "<frozen reference>",
+ "median_case_seconds": 1.98,
+ "per_case_seconds": {
+  "I01": 3.97,
+  "I02": 1.31,
+  "I03": 1.45,
+  "I04": 1.7,
+  "R01": 6.12,
+  "R02": 1.68,
+  "R03": 1.86,
+  "R04": 1.93,
+  "R05": 2.34,
+  "R06": 2.47,
+  "S01": 9.72,
+  "S02": 1.62,
+  "S03": 1.65,
+  "S04": 1.85,
+  "S05": 2.02,
+  "S06": 2.27,
+  "S07": 4.52,
+  "S08": 1.63,
+  "S09": 6.03,
+  "S10": 2.47
+ },
+ "produced": "golden reference produced by the FROZEN pre-migration implementation",
+ "redshift_kms": {
+  "max_abs": 18.51,
+  "median_abs": 1.73,
+  "n": 10
+ },
+ "synthetic_accuracy_vs_truth": {
+  "Halpha": {
+   "floor_pct": 7.000000000000001,
+   "median_pct": -0.7019,
+   "n": 10,
+   "within_floor": 8,
+   "worst_pct": 41.6346
+  },
+  "Hbeta": {
+   "floor_pct": 20.0,
+   "median_pct": -14.4214,
+   "n": 10,
+   "within_floor": 7,
+   "worst_pct": -94.7369
+  },
+  "NII_6583": {
+   "floor_pct": 10.0,
+   "median_pct": -1.5417,
+   "n": 10,
+   "within_floor": 10,
+   "worst_pct": -7.6677
+  },
+  "OIII_5007": {
+   "floor_pct": 6.0,
+   "median_pct": 0.3139,
+   "n": 10,
+   "within_floor": 7,
+   "worst_pct": -65.4655
+  }
+ },
+ "wall_seconds": 58.65
+}
