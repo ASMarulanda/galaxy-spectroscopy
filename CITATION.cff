@@ -1,0 +1,31 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below, and acknowledge SDSS as described in DATA.md."
+title: "galaxy-spectroscopy: redshift estimation and emission-line analysis of optical galaxy spectra"
+abstract: >-
+  A Python package that measures galaxy redshifts, continuum-subtracted
+  integrated H-alpha, H-beta, [O III] 5008 and [N II] 6585 emission-line fluxes,
+  and 1-sigma uncertainties from flux-calibrated optical spectra, by a joint fit
+  of the H-alpha and H-beta complexes at a common redshift.
+version: 0.1.0
+date-released: 2026-11-13
+license: MIT
+authors:
+  - family-names: Marulanda-Duque
+    given-names: Ana Sofia
+references:
+  - type: article
+    title: "The Sloan Digital Sky Survey: Technical Summary"
+    authors:
+      - family-names: York
+        given-names: D. G.
+    journal: The Astronomical Journal
+    volume: 120
+    start: 1579
+    year: 2000
+  - type: article
+    title: "The Eighteenth Data Release of the Sloan Digital Sky Surveys"
+    authors:
+      - family-names: Almeida
+        given-names: A.
+    year: 2023
+    notes: "Source of the real spectra (SDSS-I/II Legacy, run2d=26, served by DR18)."
