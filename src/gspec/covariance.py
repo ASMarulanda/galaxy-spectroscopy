@@ -11,7 +11,7 @@ standard correction for underestimated errors — but on real spectra chi2/dof i
 driven by *model mismatch* (absorption lines, sky residuals), not by photon
 noise, so the full correction over-corrects. The cap accepts up to 50 % extra
 variance and no more. Measured on this dataset it binds on 2 of 8 cases
-(docs/methods.md §6).
+(the v0.2 methods document §6).
 
 **The pseudoinverse.** ``pinv`` truncates directions whose eigenvalue falls
 below ``rcond * lambda_max`` (numpy default ``rcond=1e-15``), which is what keeps
@@ -19,7 +19,7 @@ a rank-deficient normal matrix from producing infinities. It is also why
 ``sigma_F`` is not env-ironment-stable when an amplitude sits on its bound: on
 S08 the direction carrying 37 % of ``sigma_F(Hbeta)^2`` has an eigenvalue ~12
 orders of magnitude below ``lambda_max``, so a different optimiser path moves it.
-See docs/limitations.md L4 and validation/experiments/.
+See the v0.2 limitations document L4 and the v0.2 experiments.
 
 The gradient is a forward finite difference of the *same* flux function the
 pipeline reports, so a change in the flux formula cannot silently leave the

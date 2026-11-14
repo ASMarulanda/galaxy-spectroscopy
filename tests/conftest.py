@@ -22,7 +22,7 @@ CASES = DATA / "cases"
 
 #: Relative accuracy floors, per line, in the units of the reported flux.
 #: These are the *acceptance* floors of the validation, not accuracy claims:
-#: Hbeta's 20 % is an admission threshold (docs/limitations.md L1).
+#: Hbeta's 20 % is an admission threshold (the v0.2 limitations document, L1).
 FLOORS = {"Halpha": 0.07, "Hbeta": 0.20, "OIII_5007": 0.06, "NII_6583": 0.10}
 
 #: Looser floors for a *difference* of two measurements: the continuum error is

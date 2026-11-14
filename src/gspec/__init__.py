@@ -37,7 +37,7 @@ from .results import (  # noqa: E402
 #: Dependency versions that define the numerics of this package. A result quoted
 #: in the docs was produced under these; another environment may move the last
 #: digits, and one specific uncertainty is known to be environment-sensitive
-#: (docs/limitations.md L4).
+#: (the v0.2 limitations document L4).
 VERSIONS = {
     "python": "3.12.3",
     "numpy": "1.26.4",

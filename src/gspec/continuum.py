@@ -26,7 +26,7 @@ depth against a spurious broad component and biased Hbeta by +10..+80 %.
 
 .. warning::
    On the ten synthetic cases in this repository the BIC selection rejects the
-   absorption term altogether (docs/methods.md §4.2). The model is kept because
+   absorption term altogether (the v0.2 methods document §4.2). The model is kept because
    it is selected on 5 of 6 real spectra; the claim that it *improves* Hbeta is
    not supported and is not made anywhere in this repository.
 """

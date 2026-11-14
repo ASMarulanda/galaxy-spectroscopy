@@ -18,7 +18,7 @@ config       what it is                                                  status
 ``m1b`` is **not** an independent implementation. It shares this package's
 fitter and differs in three constants, so agreement between m1a and m1b shows
 that the answer is insensitive to those constants — nothing more. Genuine
-independence is the separately written program in ``validation/independent/``.
+independence is a separately written program, published in v0.2.
 
 ``m2`` exists to be rejected. It removes the absorption term and must fail the
 accuracy test; if it passes, the test is not measuring what it claims.

@@ -138,7 +138,7 @@ def build_parameters(
     # bounds only c0 and c1, i.e. the constant term of the first complex and the
     # *slope* of the first complex -- not the constant term of the second. All
     # other continuum coefficients start at 0 and are unbounded. It is kept
-    # verbatim so the port reproduces the baseline; see docs/limitations.md L7.
+    # verbatim so the port reproduces the baseline; see the v0.2 limitations document L7.
     for i in range(len(complexes)):
         p0[idx[f"c{i}"]] = float(np.median(case.flux[windows[i]]))
         lo[idx[f"c{i}"]] = -50.0
@@ -157,7 +157,7 @@ def at_bounds(
     """Names of parameters sitting on a bound (to a relative tolerance).
 
     Reported because a bound-pinned amplitude is exactly what makes the
-    covariance fragile (docs/limitations.md L4), and because a reader should be
+    covariance fragile (the v0.2 limitations document L4), and because a reader should be
     able to tell "the model put this at zero" from "the model estimated a small
     number".
     """

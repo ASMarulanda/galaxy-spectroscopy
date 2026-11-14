@@ -77,7 +77,7 @@ def test_at_least_eight_cases_carry_a_line_inside_its_floor(reference, synthetic
 def test_the_documented_median_errors_are_reproduced(reference, synthetic_truth):
     """Pin the actual accuracy, so a silent regression cannot hide behind the band.
 
-    These are the numbers quoted in validation/report.md. A change here is a
+    These are the numbers quoted in the v0.2 validation report. A change here is a
     change in the science and must be explained, not absorbed.
     """
     medians = {}

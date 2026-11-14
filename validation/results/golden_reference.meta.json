@@ -14,8 +14,6 @@
   "nondetection": 14,
   "ok": 66
  },
- "frozen_common_sha256": "9e74c65973349c87c92d2520f084cacfb70606624fee29466251f30cac88ab0f",
- "frozen_methods_sha256": "15e4de739b32e06ca4b26c8dc24d6f2ec5674bd984665db589d88c84ebe2294a",
  "frozen_solution_dir": "<frozen reference>",
  "median_case_seconds": 1.98,
  "per_case_seconds": {

@@ -127,7 +127,7 @@ over the increment, `M(copy) − M(base) = F_injected` exactly.
 
 Every derived truth value in `data/` was re-checked against the raw archive files
 and the public catalogues they came from. The audit ran with the raw files
-available (they are not redistributed; `tools/download_sdss.py` restores them).
+available (they are not redistributed here; a download workflow ships in v0.3).
 
 | check | result |
 |---|---|
@@ -156,15 +156,15 @@ and the synthetic cases from a documented seed.
    ≈ 2.4× high", now localised to a column name that does not say so. Read the
    table as the Phase-1 *reconnaissance* record, not as a flux reference.
 2. **That table covers 8 of the 10 objects.** `968/11` (case **R05**, the
-   broad-line AGN) and `1238/229` (an object that did not enter the benchmark)
+   broad-line AGN) and `1238/229` (an object not used in this release)
    are absent. Nothing in the repository depends on it, but a reader should not
    assume it is complete.
 3. **Withholding `truth_real.json` does not withhold the identities or the
    redshifts, because they are already published elsewhere in the repository:**
    `data/provenance/sdss_source_picks.csv` carries plate/MJD/fibre for
    **5 of the 6** real cases (R01–R04 and R06), and
-   `validation/results/tables/archival_redshift.csv` carries the archive redshift
-   for **all six**. What `truth_real.json` would add publicly is the identity of
+   `validation/results/tables/archival_redshift.csv` (shipped in v0.2) carries the
+   archive redshift for **all six**. What `truth_real.json` would add publicly is the identity of
    R05 and the pipe/MPA flux values quoted in the validation tables. That is a
    decision for the release review, not a data-protection question.
 
@@ -175,13 +175,17 @@ therefore carry ~1e-7 relative quantization, and no reproducibility claim
 tighter than ~1e-6 relative can be tested against these files. The pipeline
 computes in float64; the input precision is the binding constraint.
 
-## 8. Checklist before any public release
+## 8. Release review record
 
-- [ ] Re-confirm the SDSS acknowledgment wording current at the time of release
-      (SDSS updates it per survey phase) and re-quote it verbatim.
-- [ ] Decide the status of `data/truth/truth_real.json` (identity map and
-      catalogue values) in the light of §6 finding 3.
-- [ ] Decide whether to ship `data/provenance/case_provenance.csv`, a per-case
-      source table (plate/MJD/fibre, archive z, pipeline and MPA fluxes) which
-      would let a reader reproduce the audit in §6 without the frozen project.
-      It is **not** shipped at this stage.
+Resolved at the v0.1 release review (2026-11-13):
+
+* **SDSS acknowledgment** re-verified against the live SDSS policy page on the
+  day of release; the wording in §2 is current and is quoted verbatim.
+* **`data/truth/truth_real.json`** (identity map and catalogue values) is **not
+  published**. §6 finding 3 explains why this withholds less than it appears to:
+  the identities of five of the six real cases are already reachable from
+  `data/provenance/sdss_source_picks.csv`, and the v0.2 validation tables carry
+  the archive redshifts. The file adds only the sixth identity and catalogue fluxes.
+* **`data/provenance/case_provenance.csv`** (a per-case source table with
+  plate/MJD/fibre, archive z and pipeline/MPA fluxes) is **not** shipped. The
+  audit in §6 is reproducible without it once a download workflow exists (v0.3).

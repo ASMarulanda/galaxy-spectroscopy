@@ -8,7 +8,7 @@ public module that does the work, and names it.
     python tools/walkthrough_s01.py            # default: data/cases/S01.fits
     python tools/walkthrough_s01.py S03        # any case id
 
-Read alongside `docs/methods.md`; the section numbers below match it.
+Read alongside the v0.2 methods document; the section numbers below match it.
 """
 
 from __future__ import annotations
@@ -142,10 +142,10 @@ def main() -> int:
     print("  integrated, so a change in the flux formula cannot leave sigma behind.")
 
     # ---------------------------------------------------------------- step 7
-    rule("STEP 7 — validation against analytic truth  (validation/report.md §2)")
+    rule("STEP 7 — validation against analytic truth  (the v0.2 validation report §2)")
     if CASE not in truth:
         print(f"  {CASE} is a real spectrum: no analytic truth. It is validated on")
-        print("  redshift and the archival band instead (validation/report.md §5).")
+        print("  redshift and the archival band instead (the v0.2 validation report §5).")
         return 0
     band = {"Halpha": 0.07, "Hbeta": 0.20, "OIII_5007": 0.06, "NII_6583": 0.10}
     print(f"  {'line':11} {'measured':>10} {'truth':>10} {'error':>9} {'band':>7} "

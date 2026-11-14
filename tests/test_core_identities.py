@@ -72,7 +72,7 @@ def test_unresolved_blend_is_unreachable_by_construction():
         |F|/sigma >= 3   =>   sigma <= |F|/3   =>   sigma < 0.9 |F|
 
     So the branch is dead code, and the `unresolved_blend` value documented in
-    ``flags.FLAGS``, in the CSV column and in ``docs/methods.md`` §8 can never
+    ``flags.FLAGS``, in the CSV column and in the methods document (v0.2) §8 can never
     appear in an output. This test pins the arithmetic rather than the branch:
     if someone later reorders the conditions, this fails and the documentation
     has to change with it.

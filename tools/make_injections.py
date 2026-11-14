@@ -14,7 +14,7 @@ either would let an agent answer without measuring.  The case files therefore
 keep only the calibrated spectrum (COADD, six columns) plus the unit/calibration
 metadata, and carry an opaque ``CASEID``.  Plate/MJD/fibre/RA/Dec are removed so
 the object cannot be looked up from memory either.  Provenance is retained in
-this module and in the truth manifest, which lives in the verifier container.
+this module and in the truth manifest, which is written alongside the cases.
 
 The injected flux is exact by construction: a Gaussian of width
 ``sigma_obs = sqrt(sigma_int^2 + sigma_lsf^2)`` normalised so that its integral

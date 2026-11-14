@@ -11,7 +11,7 @@ more than ``ln(N)`` each in chi-square.
 
 This layer is also a scientific measurement in its own right: on the ten
 synthetic spectra it rejects the stellar-absorption term entirely, and on five
-of six real spectra it keeps it (docs/methods.md §4.2). The report of *which*
+of six real spectra it keeps it (the v0.2 methods document §4.2). The report of *which*
 model won therefore travels with every result.
 """
 

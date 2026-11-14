@@ -48,7 +48,7 @@ LINE_NAMES = tuple(TARGET_LINES)
 #: Intensity ratios fixed by atomic physics, applied as exact ties between the
 #: components of a doublet. Tying them removes two free parameters per complex.
 #: Treating them as exact is a modelling choice; real gas with dust and shocks
-#: varies by tens of percent (docs/limitations.md, L5).
+#: varies by tens of percent (the v0.2 limitations document, L5).
 NII_RATIO_6583_6548 = 2.94      # I(6583)/I(6548)
 OIII_RATIO_5007_4959 = 2.98     # I(5007)/I(4959)
 
@@ -79,7 +79,7 @@ BUNIT = "1E-17 erg/cm^2/s/Ang"
 #: Relative covariance scaling is capped here. On real spectra chi2/dof is
 #: driven by model mismatch (absorption lines, sky residuals), not by photon
 #: noise; uncapped scaling once produced 35 % errors on 40-sigma lines.
-#: Measured on this dataset it binds on 2 of 8 cases (docs/methods.md §6).
+#: Measured on this dataset it binds on 2 of 8 cases (the v0.2 methods document §6).
 COV_SCALE_CAP = 1.5
 
 #: A line is "detected" when |F| / sigma_F exceeds this. A convention, not a
@@ -109,6 +109,6 @@ BROAD_MAX_KMS = 1800.0
 #: PHYSICAL PRIOR: stellar absorption must be at least this much broader than
 #: the ionised gas. Stars fill the galaxy; H II regions are kinematically cold.
 #: Without this tie, Hbeta absorption is degenerate with a local continuum and
-#: the fit was biased by +10..+80 % (docs/methods.md §4).
+#: the fit was biased by +10..+80 % (the v0.2 methods document §4).
 ABS_RATIO_MIN = 1.15
 ABS_RATIO_MAX = 6.0

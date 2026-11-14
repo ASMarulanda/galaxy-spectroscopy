@@ -7,7 +7,7 @@ for bit.
 
 It is a reproducibility test of the data, not of the fitter: if it fails, the
 generator or the shim has changed, and every accuracy figure in
-`validation/report.md` refers to data this repository can no longer produce.
+the v0.2 validation report refers to data this repository can no longer produce.
 """
 
 from __future__ import annotations

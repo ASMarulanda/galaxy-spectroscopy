@@ -26,7 +26,7 @@ row can never be flagged ``ok`` while its own numbers say it is a non-detection.
 
 The 3-sigma threshold is a convention, not a detection theory. On the 20 spectra
 of this repository 9 of 80 rows sit within a factor 1.5 of that boundary, so for
-~11 % of rows the flag is a knife-edge — see docs/limitations.md L6.
+~11 % of rows the flag is a knife-edge — see the v0.2 limitations document L6.
 """
 
 from __future__ import annotations
