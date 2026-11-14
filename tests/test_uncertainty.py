@@ -15,8 +15,17 @@ Three things are checked, and each fails in a different way:
   tolerance ``max(floor, 3 sigma)`` could be bought outright by inflating sigma.
   This is the rule that closed a measured exploit in the validation history.
 
-The sample is synthetic rows plus the twelve differential comparisons, which is
-what the validated calibration used (n = 52).
+Two samples are used, and they are not interchangeable:
+
+* the **homogeneous** sample — four lines × ten synthetic spectra (n = 40), where
+  both the value and the truth are independent. This is the sample the published
+  calibration claim rests on, and the RMS on it is ≈ 1.23;
+* the **pooled** sample — the same 40 plus twelve injection increments (n = 52).
+  The increments carry an error that is a deliberately conservative quadrature
+  sum of two correlated fits, so their pulls are small (RMS 0.195) and pooling
+  them *lowers* the aggregate to 1.084. That number is a regression value kept
+  for continuity with the historical record. It is not evidence of calibration,
+  and a pipeline could pass it while being badly miscalibrated on real fluxes.
 """
 
 from __future__ import annotations
@@ -68,13 +77,48 @@ def test_pull_distribution_is_calibrated(reference, synthetic_truth, injection_t
     assert beyond <= HARD_FRAC, f"{100 * beyond:.0f} % of pulls beyond {HARD_Z} sigma"
 
 
+def _pulls_homogeneous(reference, synthetic_truth):
+    """Pulls on the rows where the truth is analytic: four lines x ten spectra."""
+    pulls = []
+    for cid in SYNTHETIC:
+        truth = synthetic_truth[cid]["lines"]
+        for line in FLOORS:
+            m = reference[cid].lines[line]
+            if m.flag == "failed" or m.flux_err <= 0:
+                continue
+            pulls.append((m.flux - truth[line]["flux"]) / m.flux_err)
+    return pulls
+
+
+def test_calibration_on_the_homogeneous_sample(reference, synthetic_truth):
+    """The 40-row RMS is the published calibration figure, and it is in band.
+
+    Separate from the pooled test on purpose: pooling can hide a miscalibrated
+    flux pipeline behind well-measured increments, so the number that carries
+    the public claim is asserted on its own sample.
+    """
+    pulls = _pulls_homogeneous(reference, synthetic_truth)
+    assert len(pulls) == 40, f"expected 40 rows, got {len(pulls)}"
+    rms = math.sqrt(sum(p * p for p in pulls) / len(pulls))
+    assert PULL_RMS_LO <= rms <= PULL_RMS_HI, f"homogeneous pull RMS {rms:.2f} out of band"
+    assert rms == pytest.approx(1.232, abs=0.15)
+
+
 @pytest.mark.characterisation
 def test_measured_calibration(reference, synthetic_truth, injection_truth):
-    """Pull RMS 1.08 over 52 points, median sigma/F 5.2 % (validated values)."""
+    """Pooled regression values: 1.084 over 52 points, median |pull| 0.655.
+
+    Kept as a change detector, not as a calibration statement — see the module
+    docstring for why the two samples are not interchangeable.
+    """
     pulls = _pulls(reference, synthetic_truth, injection_truth)
     rms = math.sqrt(sum(p * p for p in pulls) / len(pulls))
-    assert rms == pytest.approx(1.08, abs=0.25)
-    assert st.median(abs(p) for p in pulls) == pytest.approx(0.85, abs=0.4)
+    assert rms == pytest.approx(1.084, abs=0.10)
+    assert st.median(abs(p) for p in pulls) == pytest.approx(0.655, abs=0.15)
+
+    hom = _pulls_homogeneous(reference, synthetic_truth)
+    assert math.sqrt(sum(p * p for p in hom) / len(hom)) > rms, (
+        "the pooled RMS is expected to sit below the homogeneous one")
 
 
 def test_no_row_reports_a_defensive_uncertainty(reference, synthetic_truth):

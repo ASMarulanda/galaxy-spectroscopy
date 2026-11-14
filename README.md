@@ -8,9 +8,10 @@ Hα λ6565, Hβ λ4863, [O III] λ5008 and [N II] λ6585, a 1σ uncertainty on e
 a quality flag — by a joint fit of the Hα and Hβ complexes at one common
 redshift.
 
-> **Status: scientific core complete and validated (stage 2 of 7).** The package
-> is ported, tested and reproduces its baseline bit for bit. Figures, notebooks
-> and the machine-learning experiment are not built yet. Not yet published.
+> **Status: scientific core validated and illustrated (stage 4 of 7).** The
+> package is ported, tested, reproduces its baseline bit for bit, and ships five
+> reproducible figures with the diagnostics they support. Notebooks and the
+> machine-learning experiment are not built. Not yet published.
 
 ## Results on the 10 synthetic spectra
 
@@ -27,7 +28,11 @@ truth is arithmetic, not a fit.
 Redshift: median |Δv| **1.7 km/s**, max **18.5 km/s**.
 Differential recovery on 4 real spectra with a line of exactly known flux
 injected: 12 / 12 comparisons pass, Hα to 1–3 %.
-Uncertainties: pull RMS **1.08** over 52 graded points.
+Uncertainties: pull RMS **1.23** over the 40 synthetic line fluxes, where both
+the value and its error are known independently (the separate implementation
+gives 1.31 on the same rows). The twelve injection *increments* are excluded
+from that number: their errors are a conservative quadrature sum of two
+correlated fits, so pooling them would flatter the calibration.
 
 **Independently validated.** A separately written program
 (`validation/independent/`, RBF continuum, bounded optimiser, bootstrap, no shared
@@ -39,6 +44,27 @@ between them on 10 of 10 synthetic cases. See `validation/report.md` §5.
 The worst-case column is not a failure — on those rows the reported σ is itself
 large and carries the tolerance — but "passes" is weaker than "accurate", which
 is why `validation/report.md` pins the medians instead.
+
+## Figures
+
+Five figures, each with the script that draws it, a vector PDF, and the measured
+numbers underneath. Regenerate all of them with
+`.venv/bin/python validation/figures/make_all.py` (~6 min); see
+**`docs/figures.md`** for the astrophysics, the equations and the caveats.
+
+| figure | what it shows | what it establishes |
+|---|---|---|
+| **1** S01 fit | spectrum, continuum, each Gaussian, total model, residuals | this spectrum is well described: χ²/ν = 1.051, all four lines within 1 % of truth |
+| **2** Hβ configurations | signed Hβ error for four fitting configurations | the *sign* of the Hβ error depends on the configuration: −14.4 %, +19.6 %, +13.7 %, +18.1 % |
+| **3** pull calibration | standardised residuals, both implementations | calibrated in aggregate (RMS 1.232 / 1.306 over n = 40), no pull beyond 3σ |
+| **4** injection response | measured vs known line-flux increment | the pipeline transfers added flux: Hα 98 %, [O III] 98 %, Hβ 92 % |
+| **5** diagnostics | BPT + Balmer decrement for the real spectra | 2 of 6 objects are measurable; R01's decrement exceeds case B by 3.3σ |
+
+The single most important number in that table is Figure 2's: switching
+**model selection** off moves Hβ by 34 percentage points (−14.4 % → +19.6 %),
+which is larger than the tolerance the pipeline is graded against. A pipeline that
+reports "Hβ to 14 %" without saying which configuration produced it is reporting a
+choice, not a measurement.
 
 ## What this does not prove
 
@@ -111,7 +137,7 @@ Derivation, bounds and failure modes: **`docs/methods.md`**.
 ## Validate
 
 ```bash
-pytest                     # 82 tests, ~230 s
+pytest                     # 105 tests, ~170 s
 ```
 
 The tests are written against analytic truth and exact increments, not against
@@ -134,9 +160,10 @@ and are neither.
 src/gspec/       the package: constants → io → redshift → fit → fluxes → flags
 data/            20 case FITS + truth manifests + provenance
 tools/           generator, injection builder, SDSS downloader
-tests/           82 tests, one per scientific failure mode
+tests/           105 tests, one per scientific failure mode
 validation/      baseline, independent implementation, report, experiments
-docs/            methods · limitations · validation history · decision log
+validation/figures/  five figure scripts + PNG/PDF + FIGURE_MANIFEST.json
+docs/            methods · figures · limitations · validation history · decision log
 ```
 
 ## Citing
