@@ -163,8 +163,8 @@ and the synthetic cases from a documented seed.
    redshifts, because they are already published elsewhere in the repository:**
    `data/provenance/sdss_source_picks.csv` carries plate/MJD/fibre for
    **5 of the 6** real cases (R01–R04 and R06), and
-   `validation/results/tables/archival_redshift.csv` (shipped in v0.2) carries the
-   archive redshift for **all six**. What `truth_real.json` would add publicly is the identity of
+   `validation/results/tables/archival_redshift.csv` carries the archive redshift
+   for **all six**. What `truth_real.json` would add publicly is the identity of
    R05 and the pipe/MPA flux values quoted in the validation tables. That is a
    decision for the release review, not a data-protection question.
 
@@ -184,8 +184,8 @@ Resolved at the v0.1 release review (2026-11-13):
 * **`data/truth/truth_real.json`** (identity map and catalogue values) is **not
   published**. §6 finding 3 explains why this withholds less than it appears to:
   the identities of five of the six real cases are already reachable from
-  `data/provenance/sdss_source_picks.csv`, and the v0.2 validation tables carry
-  the archive redshifts. The file adds only the sixth identity and catalogue fluxes.
+  `data/provenance/sdss_source_picks.csv`, and the validation tables carry the
+  archive redshifts. The file adds only the sixth identity and catalogue fluxes.
 * **`data/provenance/case_provenance.csv`** (a per-case source table with
   plate/MJD/fibre, archive z and pipeline/MPA fluxes) is **not** shipped. The
   audit in §6 is reproducible without it once a download workflow exists (v0.3).

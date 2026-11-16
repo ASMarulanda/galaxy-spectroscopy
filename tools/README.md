@@ -13,7 +13,8 @@ measurement pipeline, and nothing in `src/gspec/` imports them.
 
 `generate_synthetic.py` and `make_injections.py` differ from the versions that
 produced `data/` by two imports — the import of a sibling `common.py` became an
-import of `_compat.py` — and, in `make_injections.py`, one docstring sentence. Rewriting them to the package's API would have meant that the
+import of `_compat.py` — and, in `make_injections.py`, one docstring sentence and one
+code comment. Rewriting them to the package's API would have meant that the
 generator shipped here is not the generator that produced `data/cases/`, and the
 reproducibility claim for the only exactly-known truth in the project would rest
 on a program that never ran.

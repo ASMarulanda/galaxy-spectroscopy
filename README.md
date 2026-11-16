@@ -4,7 +4,7 @@
 external truth.**
 
 Ana Sofía Marulanda-Duque · v0.1 · [data provenance](DATA.md) ·
-[licence](#9-data-provenance-and-licensing)
+[licence](#10-data-provenance-and-licensing)
 
 ---
 
@@ -277,10 +277,12 @@ absolute scale.
 catalogue (Brinchmann et al. 2004) give fluxes for the same objects, but agreement bounds how
 wrong a measurement can be without showing that it is right.
 
-A fourth tier — a program written independently against the same problem — is scheduled
-for v0.2, when the evidence to reproduce it will be published; it tests whether the Hβ
-behaviour of §6.5 is a property of this model or of the problem. Its numbers are not
-reported here.
+A fourth tier is a program written independently against the same problem — a
+radial-basis-function continuum, a bounded optimiser and a bootstrap, sharing no estimator
+with this package. It exists to test whether the Hβ behaviour of §6.5 is a property of this
+model or of the problem. Its measurements, its outputs and the comparison tables ship in
+[`validation/independent/`](validation/independent/), and the analysis is
+[`validation/report.md`](validation/report.md) §5.
 
 ---
 
@@ -339,6 +341,7 @@ only in model-selection choices gives:
 | default (BIC selection over seven candidates) | **−14 %** |
 | identical constants, model selection disabled | **+20 %** |
 | alternative configuration (quadratic continuum, wider windows) | **+14 %** |
+| independently written implementation | **+18 %** |
 
 The sign of the error flips with the model: the default under-predicts, both configurations
 retaining the absorption term over-predict. Switching model selection off alone is worth about
@@ -350,8 +353,9 @@ The mechanism links to §4.2: Hβ lies where Balmer absorption is strongest. Sel
 the absorption term on the synthetic spectra because their absorption is weak, so part of Hβ
 is absorbed by an unmodelled feature and comes out low; with the term retained the fit can
 overshoot on faint lines. A second, independently written implementation occupies the
-overshoot side too (v0.2). Neither is demonstrated to be correct: the evidence is consistent
-with a model that cannot fully resolve the two contributions.
+overshoot side too (+18 %), and the analytic truth falls between the reference and that
+implementation in **all ten** cases. Neither is demonstrated to be correct: the evidence is
+consistent with a model that cannot fully resolve the two contributions.
 
 ### 6.6 The absorption term does not improve Hβ
 
@@ -396,7 +400,8 @@ spread of §6.5. That is arithmetic, not a measurement, but it shows why any ext
 this pipeline
 must carry the sensitivity, and why every diagram whose vertical axis is [O III]/Hβ (Baldwin
 et al. 1981; Veilleux & Osterbrock 1987; Kewley et al. 2001; Kauffmann et al. 2003) inherits
-it.
+it. The exploratory diagnostics that use these ratios appear in Figure 5; their treatment,
+with the small-sample caveat, is in [`docs/figures.md`](docs/figures.md) §5.
 
 Twenty spectra, six real, one a broad-line object the model constrains poorly: nothing here
 supports a statement about populations, luminosity or mass dependence, or any property the
@@ -406,7 +411,53 @@ fitted from population synthesis rather than a single tied Gaussian (Cappellari 
 
 ---
 
-## 8. Reproducibility
+## 8. Figures
+
+Each figure is produced by a script in `validation/figures/`, from the committed data, with
+no number typed by hand; `make_all.py` regenerates all five and records their hashes. The
+full treatment — question, equations, what each figure does and does not establish — is in
+[`docs/figures.md`](docs/figures.md).
+
+![Figure 1](validation/figures/fig1_s01_fit.png)
+
+**Figure 1 — the reference case decomposed.** The observed S01 spectrum with its 1σ band,
+the fitted continuum, each emission component drawn on top of that continuum, the total
+model, and normalised residuals over every fitted pixel. χ²/ν = 1.051, all four lines
+within 1 % of truth — but one well-fitted spectrum is not a validation: S09's Hβ is 94.7 %
+low and its residuals look equally unremarkable (§6.2).
+
+![Figure 2](validation/figures/fig2_hbeta_configurations.png)
+
+**Figure 2 — Hβ depends on the configuration.** Signed Hβ error for every synthetic spectrum
+under the three configurations of §6.5. The sign flips with the model: every configuration
+that retains the absorption term over-predicts. Every row passes the acceptance test, including the one
+where Hβ is nearly six times its true value — which is the point.
+
+![Figure 3](validation/figures/fig3_pull_calibration.png)
+
+**Figure 3 — are the uncertainties honest?** Pull distributions for the reference and the
+independently written implementation against a standard normal, n = 40 each. Both are calibrated in the aggregate
+(RMS 1.23 and 1.31) with no tail — necessary but not sufficient, since the four lines of a
+case share one fit (§6.4).
+
+![Figure 4](validation/figures/fig4_injection_recovery.png)
+
+**Figure 4 — injection response.** Measured against the known injected increment on
+logarithmic axes, with the 1:1 line and ±20 % guides. This is a differential test: it
+measures the slope of the response and is blind to the absolute flux scale, which is why it
+complements Figure 2 rather than repeating it (§6.3).
+
+![Figure 5](validation/figures/fig5_diagnostics.png)
+
+**Figure 5 — exploratory line-ratio diagnostics.** BPT position for the two of six real
+spectra with a measurable Hβ, with the Kauffmann et al. (2003) and Kewley et al. (2001)
+reference curves, and the Balmer decrement with case B marked. The four objects without a
+measurable Hβ are named in the panel rather than plotted, and no population statement is
+made from two points ([`docs/figures.md`](docs/figures.md) §5).
+
+---
+
+## 9. Reproducibility
 
 ```bash
 git clone https://github.com/ASMarulanda/galaxy-spectroscopy
@@ -432,9 +483,12 @@ result.chi2dof, result.n_par, result.at_bounds   # diagnostics travel with the n
 ```
 
 Batch use is `gspec measure --cases data/cases --out line_measurements.csv`;
-`python tools/walkthrough_s01.py` prints every intermediate for one case.
+`python tools/walkthrough_s01.py` prints every intermediate for one case. Every figure in
+this document is regenerated by `python validation/figures/make_all.py` (about six minutes),
+which also records the software versions and the SHA-256 of each input and output in
+`FIGURE_MANIFEST.json`.
 
-The suite (`pytest`, 83 tests, about three minutes) is organised by failure mode: FITS and
+The suite (`pytest`, 105 tests, about four minutes) is organised by failure mode: FITS and
 units, the quadrature identity, Gaussian integration, accuracy against truth, redshift
 recovery, the injection identity, uncertainty calibration, a negative control that must fail,
 regression against a frozen baseline, and bit-for-bit regeneration of the synthetic data. The
@@ -442,7 +496,7 @@ shipped baseline is reproduced exactly, so every number here is recomputable.
 
 ---
 
-## 9. Data provenance and licensing
+## 10. Data provenance and licensing
 
 The twenty spectra carry three provenance positions, itemised per file in
 [DATA.md](DATA.md). The ten synthetic spectra are original work from a documented seed
@@ -460,11 +514,19 @@ preserved. Three such gaps are stated rather than reconstructed, and the provena
 
 ---
 
-## 10. Status
+## 11. Status
 
-**v0.1** is the pipeline, its tests, its data and this document. **v0.2** adds the validation
-layer: report, independent implementation and comparison, the experiments of §6.5–§6.7,
-methods and limitations documents, and five figures. **v0.3** adds a download workflow.
+**v0.1** is the measurement pipeline, its tests, its data and the introduction you are
+reading. **v0.2** — this release — adds the evidence layer: the five figures of §8, the
+independent implementation and its comparison, the controlled experiments of §6.5–§6.7, and
+five documents — [`docs/methods.md`](docs/methods.md),
+[`docs/limitations.md`](docs/limitations.md), [`docs/figures.md`](docs/figures.md),
+[`docs/validation-history.md`](docs/validation-history.md) and
+[`docs/decision-log.md`](docs/decision-log.md) — together with the full
+[`validation/report.md`](validation/report.md). **v0.3** will add a download workflow that
+retrieves a spectrum from the SDSS archive by its identifiers, verifies its integrity and
+FITS contract, records provenance and measures it end to end; this release provides no such
+downloader.
 
 ---
 

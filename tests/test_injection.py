@@ -70,7 +70,7 @@ def test_bright_halpha_increments_are_recovered_to_a_few_percent(reference, inje
 
 
 def test_the_copy_differs_from_its_base(reference):
-    """A submission (or a pipeline) that returns the base for the copy is not measuring.
+    """An implementation that returns the base for the copy is not measuring.
 
     This is the anti-degeneracy check: if the added line were ignored, every
     difference would be identically zero and the differential test above would

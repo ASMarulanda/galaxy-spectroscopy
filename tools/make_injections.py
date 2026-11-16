@@ -117,7 +117,7 @@ def main():
                          subclass=d["subclass"], sn_median=d["sn"],
                          vdisp_kms=d["vdisp"], file_sha256_source=fn),
             lines={
-                # strict grading does NOT use these; they are a broad consistency band
+                # the strict thresholds do not use these; they are a broad consistency band
                 "Halpha": dict(pipe=d["spzline"].get("H_alpha"),
                                mpa=mpa["mpa_Ha"], mpa_err=mpa["mpa_Ha_err"]),
                 "Hbeta": dict(pipe=d["spzline"].get("H_beta"),

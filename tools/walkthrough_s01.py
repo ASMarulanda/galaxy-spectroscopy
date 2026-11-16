@@ -8,7 +8,7 @@ public module that does the work, and names it.
     python tools/walkthrough_s01.py            # default: data/cases/S01.fits
     python tools/walkthrough_s01.py S03        # any case id
 
-Read alongside the v0.2 methods document; the section numbers below match it.
+Read alongside `docs/methods.md`; the section numbers below match it.
 """
 
 from __future__ import annotations
@@ -44,7 +44,7 @@ def main() -> int:
 
     # ---------------------------------------------------------------- step 1
     rule(f"STEP 1 — loading the FITS file  ({PATH.name})")
-    print("module: gspec.io.read_case()   (methods.md §1)")
+    print("module: gspec.io.read_case()   (docs/methods.md §4.1)")
     with fits.open(PATH) as hdul:
         hdul.info()
         prim = hdul[0].header
@@ -59,7 +59,7 @@ def main() -> int:
     case = gspec.read_case(PATH)
 
     # ---------------------------------------------------------------- step 2
-    rule("STEP 2 — wavelength, flux density and inverse variance  (methods.md §1-2)")
+    rule("STEP 2 — wavelength, flux density and inverse variance  (docs/methods.md §4.1-4.2)")
     print("module: gspec.io.Case (wave = 10**loglam, dlam from the native grid)")
     dlog = float(np.median(np.diff(case.loglam)))
     dlam_ha = float(case.dlam[np.argmin(np.abs(case.wave - K.HALPHA * (1 + 0.04)))])
@@ -75,7 +75,7 @@ def main() -> int:
           f"{case.wdisp[np.argmin(np.abs(case.wave - K.HALPHA*(1+0.04)))]:.3f} px")
 
     # ---------------------------------------------------------------- step 3
-    rule("STEP 3 — redshift estimation  (methods.md §2)")
+    rule("STEP 3 — redshift estimation  (docs/methods.md §4.2)")
     print("modules: gspec.redshift.matched_filter_scan() -> redshift_peaks()")
     zs, score = matched_filter_scan(case)
     top = np.argsort(score)[::-1][:5]
@@ -93,7 +93,7 @@ def main() -> int:
         print(f"  analytic truth     z = {truth[CASE]['z']:.8f}  ->  error {dz:+.2f} km/s")
 
     # ---------------------------------------------------------------- step 4
-    rule("STEP 4 — continuum and emission lines  (methods.md §3-4)")
+    rule("STEP 4 — continuum and emission lines  (docs/methods.md §4.3)")
     print("modules: gspec.select.fit_with_model_selection() -> fit_case() -> "
           "model.build_segments()")
     print(f"  model selected     {result.model_selected}")
@@ -114,7 +114,7 @@ def main() -> int:
                   f"   -> line {LINE_OF_KEY.get(k)}")
 
     # ---------------------------------------------------------------- step 5
-    rule("STEP 5 — integrated line fluxes  (methods.md §5)")
+    rule("STEP 5 — integrated line fluxes  (docs/methods.md §4.6)")
     print("module: gspec.fluxes.components() / integrated_flux()")
     print("  F = A * sqrt(sigma_int^2 + sigma_LSF^2) * sqrt(2 pi), summed per line")
     for line in ("Halpha", "Hbeta", "OIII_5007", "NII_6583"):
@@ -131,7 +131,7 @@ def main() -> int:
                   f"{100*(result.lines[line].flux/t-1):+.2f} %")
 
     # ---------------------------------------------------------------- step 6
-    rule("STEP 6 — uncertainties  (methods.md §6)")
+    rule("STEP 6 — uncertainties  (docs/methods.md §4.7)")
     print("modules: gspec.covariance.covariance() / sigma_of_flux()")
     print("  Cov = pinv(J'J) * min(chi2/dof, cap);  sigma_F^2 = grad' Cov grad")
     print(f"  {'line':11} {'F':>10} {'sigma_F':>9} {'sigma/F':>9} {'|F|/sigma':>10}  flag")
@@ -142,10 +142,10 @@ def main() -> int:
     print("  integrated, so a change in the flux formula cannot leave sigma behind.")
 
     # ---------------------------------------------------------------- step 7
-    rule("STEP 7 — validation against analytic truth  (the v0.2 validation report §2)")
+    rule("STEP 7 — validation against analytic truth  (validation/report.md §2)")
     if CASE not in truth:
         print(f"  {CASE} is a real spectrum: no analytic truth. It is validated on")
-        print("  redshift and the archival band instead (the v0.2 validation report §5).")
+        print("  redshift and the archival band instead (validation/report.md §5).")
         return 0
     band = {"Halpha": 0.07, "Hbeta": 0.20, "OIII_5007": 0.06, "NII_6583": 0.10}
     print(f"  {'line':11} {'measured':>10} {'truth':>10} {'error':>9} {'band':>7} "
