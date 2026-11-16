@@ -8,7 +8,7 @@ What `m2` actually fails — measured, not assumed
 On the ten synthetic spectra `m2` is *not* clearly worse: its Hbeta median error
 is -11.1 % against the reference's -14.4 %. This is an uncomfortable but
 important result, and it is why the repository makes no claim that the absorption
-model improves Hbeta (v0.2 methods §4.2, limitations L3).
+model improves Hbeta (`docs/methods.md` §4.2, limitations L3).
 
 Where `m2` does fail is structural: it loses the I04 injection entirely (the fit
 collapses to z = 0.0195 instead of 0.0826, a 18 910 km/s error), and it misses

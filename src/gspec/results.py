@@ -2,7 +2,7 @@
 
 The diagnostics are not debugging aids. On this dataset the *selected model* is a
 scientific result: the BIC sweep rejects the stellar-absorption term on all ten
-synthetic spectra and keeps it on five of six real ones (the v0.2 methods document §4.2).
+synthetic spectra and keeps it on five of six real ones (`docs/methods.md` §4.2).
 A reader who only sees ``flux`` cannot tell that apart from a fit that used
 absorption everywhere, so the model and the bound state travel with the numbers.
 """

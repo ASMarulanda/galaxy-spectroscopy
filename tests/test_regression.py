@@ -88,7 +88,7 @@ def test_csv_export_round_trips_through_the_cli(tmp_path, data_dir, golden_rows)
 def test_model_selection_pattern_matches_the_documented_result(reference):
     """The BIC sweep rejects absorption on synthetic and keeps it on real spectra.
 
-    This is a *scientific* result reported in the v0.2 methods document §4.2, so it is
+    This is a *scientific* result reported in `docs/methods.md` §4.2, so it is
     pinned: if it changes, the documentation is wrong.
     """
     synthetic_abs = [cid for cid in SYNTHETIC if reference[cid].model.use_absorption]

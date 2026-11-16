@@ -1,6 +1,6 @@
 """The shipped alternative configuration (`m1b`) and the control (`m2`).
 
-Both are exposed in `gspec.variants` and both are described in the v0.2 methods document,
+Both are exposed in `gspec.variants` and both are described in `docs/methods.md`,
 so both need a test — otherwise a configuration that nobody exercises can drift
 away from its documentation without anything noticing.
 
