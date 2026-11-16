@@ -1,0 +1,71 @@
+{
+ "generated_by": "validation/figures/make_all.py",
+ "versions": {
+  "python": "3.12.3",
+  "platform": "Linux-7.0.0-42-generic-x86_64-with-glibc2.39",
+  "numpy": "1.26.4",
+  "scipy": "1.11.4",
+  "astropy": "7.0.0",
+  "matplotlib": "3.6.3"
+ },
+ "scripts": [
+  {
+   "script": "fig1_s01_fit.py",
+   "purpose": "Figure 1 \u2014 S01 fit and residuals"
+  },
+  {
+   "script": "fig2_hbeta_configurations.py",
+   "purpose": "Figure 2 \u2014 H\u03b2 model dependence"
+  },
+  {
+   "script": "fig3_pull_calibration.py",
+   "purpose": "Figure 3 \u2014 uncertainty calibration"
+  },
+  {
+   "script": "fig4_injection_recovery.py",
+   "purpose": "Figure 4 \u2014 injection recovery"
+  },
+  {
+   "script": "fig5_diagnostics.py",
+   "purpose": "Figure 5 \u2014 line-ratio diagnostics"
+  }
+ ],
+ "inputs": {
+  "data/cases/I01.fits": "e1410ec61f09504644068d82af3bfd55f0656c90467fb33892a9bcc723764980",
+  "data/cases/I02.fits": "7a9878323219c0b38d850f137680217e286ab38849f3e5c0612137b172431c82",
+  "data/cases/I03.fits": "d070e8e014a45e2f8be585fdb6ae9644a6e594e047245e1021d8540630f3eef8",
+  "data/cases/I04.fits": "4dca0fa3eed83750eb86a0ef489043063a69c3855e946b8a403afa576b1d5d66",
+  "data/cases/R01.fits": "db2d8d23fea9e1b2c355a2c99dd51d21f08b34629c542f7fa960dc7f1b3225ce",
+  "data/cases/R02.fits": "ea2cf5f1b7407fd0cbd00f03325cfdc7fb0bcc243f438fad145e67e3110ee4ce",
+  "data/cases/R03.fits": "a47c93e73728f18e8f91a86477a4c38f7cb03c481fe9252ea391323689c6aad2",
+  "data/cases/R04.fits": "0114249afd3355d9e2f01589dca017a27ccb97a5641e7ed1455ceaae505c106b",
+  "data/cases/R05.fits": "81aeb6c59cc784067c8a2c7f1d56e227e5c7a73d925f7890d29c17aacf9dfbde",
+  "data/cases/R06.fits": "89b4e668395172bdae210ff76c8e3bd45313820b528aa09dc3022cf793a0f1f3",
+  "data/cases/S01.fits": "bf82d29aec2b33b3a61b1f3362a782d93840b0a27dbcfab237e95f16a93fc567",
+  "data/cases/S02.fits": "5cfa4a16773568488d508d249b82ac28cbe5e4d9692ace5a2342396aaf01abb6",
+  "data/cases/S03.fits": "454048c4201c03dc83318ffe52aa99bb16c0f23786f18645cf8a2d595e35ce1c",
+  "data/cases/S04.fits": "1dd6d468937a833b14b47fcaf56a925593a46213774faa6f651d1ed515c86a1d",
+  "data/cases/S05.fits": "c6222d3a07b5822d22182c586f4b1da47da993649efcd0b86d6739c4aa1ff8ed",
+  "data/cases/S06.fits": "5c1c61c19d7728bf5da6fe2760dede7300e6ce30e69ef8a9de5d3e2cf44d6458",
+  "data/cases/S07.fits": "0ce33a1f24f890876cecc04b540648cef71bfe6239f2246837d51ff2855b3f3f",
+  "data/cases/S08.fits": "a3bf1b33a8a0813ea6fbe754b83f9651c2567d03177b07bc951bc8154693076d",
+  "data/cases/S09.fits": "c24c145379829ea67ef97547ee786ec69f5c9cf25235c5049ea51e1fb255362c",
+  "data/cases/S10.fits": "933caa79da2b8d3ebdb1c49b8dda1fd71259413c802797b785429c5ce9beb52b",
+  "data/truth/truth_synthetic.json": "25cd423baf3a2257ae44a3c5cac510dd360f9c559d203b4fa56af6b355a07b23",
+  "data/truth/truth_injections.json": "4b7412637bd35c60cae135195a699a319ad3beb8071c06ca59ab634aab0afcc2",
+  "validation/results/golden_reference.csv": "460913a261a8ebecd88b89d63266c87d0f1ad906c71ff2fa8907d4fb76a2211d",
+  "validation/results/out_independent.csv": "60bfea87f7ce6987ea03d0349da0892d0598003ab4d04d8258d41c73b8198fc6"
+ },
+ "outputs": {
+  "fig1_s01_fit.pdf": "c33c66cf96aa755326227b47590a46ad4281b89a124c09bc5371d3935cdf704f",
+  "fig1_s01_fit.png": "12c60d37125d54f6978463a25075d736119821efa84c201cde48c2f559da8761",
+  "fig2_hbeta_configurations.pdf": "52f15d17fa50dd4ff46058aa9cff94c86025df0f343c8fd228216dfcf0518b5d",
+  "fig2_hbeta_configurations.png": "d180ba260812b7c436153b820edab900e964c0dd222ead879f6d5d4ec56dc6ca",
+  "fig3_pull_calibration.pdf": "a42697ab3f0b0de7048944a9a3057d0c219e1e5e8672e81f24134af61235eaab",
+  "fig3_pull_calibration.png": "003d64cbef98fa953e7c8dc9709a1f993a0376ccbcc70055f03bbcff661edcc9",
+  "fig4_injection_recovery.pdf": "087c7abb0ba219c4e8f31fe7e378b557db4e2fa43060b0746add0e9a00c8a903",
+  "fig4_injection_recovery.png": "6d364c6b55e3a584b41d5146efc88722f2c07ac365327f8c4036652d39596664",
+  "fig5_diagnostics.pdf": "507db5766d42a12641923f15ba7f513398a7159f8731ffd2830d1a5188457524",
+  "fig5_diagnostics.png": "a2521b8f7ac5362de6122faa9d6b504c97cff3551e9953b224e94dbf9af9d894"
+ }
+}
