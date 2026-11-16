@@ -19,8 +19,8 @@ classifiers = [
 ]
 
 # The pins are part of the science, not housekeeping: every number in this
-# repository was calibrated against these versions. See the v0.2 limitations
-# document, "environment sensitivity", before changing any of them.
+# repository was calibrated against these versions. See `docs/limitations.md`,
+# "environment sensitivity", before changing any of them.
 dependencies = [
   "numpy==1.26.4",
   "scipy==1.11.4",
@@ -29,7 +29,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest==8.4.1"]
+dev = ["pytest==8.4.1", "matplotlib==3.6.3"]
 
 [project.scripts]
 gspec = "gspec.cli:main"
