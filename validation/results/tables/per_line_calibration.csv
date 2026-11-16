@@ -1,0 +1,9 @@
+line,floor,impl,rows_floor_binds,worst_error_where_floor_binds,floor_over_worst,median_abs_error,rows_over_floor_raw
+Halpha,0.07,reference,5,0.0287,2.44,0.0216,2
+Halpha,0.07,independent,3,0.0206,3.41,0.0172,1
+Hbeta,0.2,reference,4,0.1401,1.43,0.1442,3
+Hbeta,0.2,independent,1,0.0192,10.41,0.1808,4
+OIII_5007,0.06,reference,3,0.0067,8.97,0.0129,3
+OIII_5007,0.06,independent,2,0.0084,7.13,0.0358,3
+NII_6583,0.1,reference,5,0.0473,2.11,0.0365,0
+NII_6583,0.1,independent,3,0.0336,2.97,0.0301,1

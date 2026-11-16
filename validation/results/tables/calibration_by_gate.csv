@@ -1,0 +1,12 @@
+gate,reference_ok,reference_detail,independent_ok,independent_detail
+0_schema,True,"80 rows, schema, ranges and unit scale OK (median |flux|=167.2)",True,"80 rows, schema, ranges and unit scale OK (median |flux|=173.7)"
+0b_output_files,True,exactly one output file (line_measurements.csv),True,exactly one output file (line_measurements.csv)
+1_degeneracy,True,not constant; injections differ from bases,True,not constant; injections differ from bases
+2_synthetic_accuracy,True,"40 graded, 0 flagged-out, 0 failures",True,"40 graded, 0 flagged-out, 0 failures"
+2b_redshift_accuracy,True,"14 cases graded against truth at 150 km/s, 20 checked for cross-line consistency at 50 km/s, 0 failures",True,"14 cases graded against truth at 150 km/s, 20 checked for cross-line consistency at 50 km/s, 0 failures"
+2d_redshift_uncertainty,True,"n=14 exact-truth spectra, median |dz|/sigma_z=1.00 (requires 0.2-5.0), every sigma_z >= 1e-08",True,"n=14 exact-truth spectra, median |dz|/sigma_z=2.04 (requires 0.2-5.0), every sigma_z >= 1e-08"
+2c_case_anchor,True,10/10 synthetic cases carry a line within its relative floor (need 8),True,9/10 synthetic cases carry a line within its relative floor (need 8); weak: S09 best NII_6583 at 243% of floor
+3_injection_differential,True,"12 graded, 0 flagged-out, 0 failures",True,"12 graded, 0 flagged-out, 0 failures"
+4_archival_consistency,True,"10 cases checked, 0 violations",True,"10 cases checked, 0 violations"
+5_uncertainty_calibration,True,"n=52 pull RMS=1.03 (allowed 0.5-2.5), 0% beyond 5.0 sigma (max 20%), median sigma/F=0.061",True,"n=52 pull RMS=1.15 (allowed 0.5-2.5), 0% beyond 5.0 sigma (max 20%), median sigma/F=0.071"
+6_flag_honesty,True,"81% ok, 0% failed",True,"94% ok, 0% failed"

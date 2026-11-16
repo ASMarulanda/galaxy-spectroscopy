@@ -1,0 +1,13 @@
+line,floor,population,rows_binding,worst_case,worst_error,floor_over_worst
+Halpha,0.07,reference,5,S05,0.028653,2.4431
+Halpha,0.07,independent,3,S02,0.020551,3.4062
+Halpha,0.07,pooled,8,S05,0.028653,2.4431
+Hbeta,0.2,reference,4,S05,0.140108,1.4275
+Hbeta,0.2,independent,1,S01,0.019217,10.4077
+Hbeta,0.2,pooled,5,S05,0.140108,1.4275
+OIII_5007,0.06,reference,3,S10,0.006688,8.9708
+OIII_5007,0.06,independent,2,S01,0.008412,7.1327
+OIII_5007,0.06,pooled,5,S01,0.008412,7.1327
+NII_6583,0.1,reference,5,S05,0.047314,2.1136
+NII_6583,0.1,independent,3,S02,0.033618,2.9746
+NII_6583,0.1,pooled,8,S05,0.047314,2.1136

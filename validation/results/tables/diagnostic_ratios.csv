@@ -1,0 +1,7 @@
+case_id,halpha_snr,hbeta_snr,oiii_snr,nii_snr,nii_ha,nii_ha_err,oiii_hb,oiii_hb_err,balmer,balmer_err,bpt_placeable,e_bv,e_bv_err,av,av_err,av_upper,extinction_note
+R01,61.69,7.26,4.16,43.06,0.338306,0.00958114,0.163142,0.0451818,5.27024,0.731421,1,0.618313,0.140386,1.91677,0.435196,nan,
+R02,99.32,38.18,117.93,32.04,0.0539928,0.00177083,3.41237,0.0939378,3.26354,0.0915704,1,0.133514,0.0283826,0.413894,0.0879862,nan,
+R03,6.87,0.98,2.59,31.26,0.448721,0.06691,nan,nan,nan,nan,0,nan,nan,nan,nan,nan,Hα/Hβ not measurable: Hbeta below 3σ
+R04,4.00,0.48,6.03,23.04,0.584288,0.148128,nan,nan,nan,nan,0,nan,nan,nan,nan,nan,Hα/Hβ not measurable: Hbeta below 3σ
+R05,7.04,0.33,20.29,19.22,0.345596,0.0522564,nan,nan,nan,nan,0,nan,nan,nan,nan,nan,Hα/Hβ not measurable: Hbeta below 3σ
+R06,1.96,0.13,0.64,4.92,nan,nan,nan,nan,nan,nan,0,nan,nan,nan,nan,nan,Hα/Hβ not measurable: Halpha below 3σ; Hbeta below 3σ
