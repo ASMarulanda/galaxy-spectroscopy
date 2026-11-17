@@ -1,0 +1,51 @@
+name: tests
+
+# The suite is offline by construction: the network is replaced by fakes in
+# tests/test_fetch.py, and the one end-to-end test serves bytes from a local
+# fixture. Nothing here downloads SDSS data, and no secret is used.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # The pins live in pyproject.toml — numpy 1.26.4, scipy 1.11.4, astropy 7.0.0,
+      # matplotlib 3.6.3 — so CI installs exactly the stack the numbers were produced on.
+      - name: Install the validated environment
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Imports resolve
+        run: |
+          python -c "import sys, gspec, numpy, scipy, astropy, matplotlib; \
+          print('python', sys.version.split()[0]); \
+          print('gspec', gspec.__version__); \
+          print('numpy', numpy.__version__); \
+          print('scipy', scipy.__version__); \
+          print('astropy', astropy.__version__)"
+
+      - name: Test suite
+        run: pytest -q
+
+      - name: The scientific baseline still reproduces
+        # Not a network step: this measures the twenty bundled cases and compares
+        # the CSV with the published baseline hash.
+        run: |
+          gspec measure --cases data/cases --out /tmp/baseline.csv --quiet
+          python -c "import hashlib, sys; g = hashlib.sha256(open('/tmp/baseline.csv','rb').read()).hexdigest(); print('baseline sha256:', g); sys.exit(0 if g.startswith('460913a261a8ebecd88b89d6') else 'BASELINE DRIFT')"
