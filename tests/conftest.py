@@ -69,3 +69,72 @@ def cases() -> dict[str, gspec.Case]:
 def reference(cases) -> dict[str, gspec.SpectrumResult]:
     """The reference model (m1a) on all 20 cases, fitted once."""
     return {cid: gspec.measure(case) for cid, case in cases.items()}
+
+
+# ------------------------------------------------------------------ V0.3 tools
+# The retrieval and conversion tools live outside the package (tools/), because
+# they are not part of the measured scientific API. Tests import them by path.
+
+import sys as _sys
+
+_sys.path.insert(0, str(ROOT / "tools"))
+
+
+@pytest.fixture
+def make_raw(tmp_path):
+    """Build an SDSS-like archive file, by default the one R06 was made from.
+
+    The arrays come from the shipped, redacted case ``R06.fits``, which DATA.md §3
+    records as carrying the archive COADD columns unchanged. Rebuilding a raw file
+    from it therefore gives a fixture whose conversion must reproduce R06 exactly —
+    that identity is what the end-to-end test asserts. Each keyword argument breaks
+    exactly one thing, so a test can prove the converter refuses it.
+    """
+    from astropy.io import fits
+    import numpy as np
+
+    def _make(name="spec-0294-51986-0036.fits", *, drop=(), loglam=None, bunit=None,
+              vacuum=True, ivar=None, dflag=1, coeff0=None, coeff1=None,
+              wdisp=None, n_rows=None):
+        ref = fits.open(CASES / "R06.fits")[1].data
+        n = n_rows or len(ref)
+        data = {c: np.asarray(ref[c])[:n] for c in
+                ("flux", "loglam", "ivar", "and_mask", "or_mask", "wdisp")}
+        if loglam is not None:
+            data["loglam"] = np.asarray(loglam, dtype=np.float32)
+        if ivar is not None:
+            data["ivar"] = np.asarray(ivar, dtype=np.float32)
+        if wdisp is not None:
+            data["wdisp"] = np.asarray(wdisp, dtype=np.float32)
+
+        prim = fits.PrimaryHDU()
+        h = prim.header
+        h["BUNIT"] = "1E-17 erg/cm^2/s/Ang" if bunit is None else bunit
+        if vacuum is not None:
+            h["VACUUM"] = vacuum
+        h["COEFF0"] = float(data["loglam"][0]) if coeff0 is None else coeff0
+        h["COEFF1"] = 1e-4 if coeff1 is None else coeff1
+        h["DC-FLAG"] = dflag
+        h["MJD"] = 51986
+        h["FIBERID"] = 36
+        h["RUN2D"] = 26
+        h["TELESCOP"] = "SDSS 2.5-M"
+
+        cols = [fits.Column(name=c, format="J" if "mask" in c else "E",
+                            array=data[c]) for c in data if c not in drop]
+        if "sky" not in drop:
+            cols.append(fits.Column(name="sky", format="E",
+                                    array=np.zeros(n, dtype=np.float32)))
+            cols.append(fits.Column(name="model", format="E",
+                                    array=np.asarray(ref["flux"])[:n] * 0.5))
+        coadd = fits.BinTableHDU.from_columns(cols, name="COADD")
+        # a second extension that carries an "answer"; the converter must drop it
+        spec = fits.BinTableHDU.from_columns(
+            [fits.Column(name="z", format="E", array=np.array([0.081202], dtype=np.float32)),
+             fits.Column(name="class", format="6A", array=np.array(["GALAXY"]))],
+            name="SPECOBJ")
+        path = tmp_path / name
+        fits.HDUList([prim, coadd, spec]).writeto(path, overwrite=True)
+        return path
+
+    return _make
