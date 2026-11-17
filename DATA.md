@@ -17,9 +17,68 @@ It is the authoritative data record; the README summarises it.
 | `data/provenance/sha256_data.txt` | — | SHA-256 of the ten raw SDSS files as downloaded | — |
 | `data/checksums.sha256` | — | SHA-256 of every file under `data/` | — |
 
-`data/truth/truth_real.json` is **not** published at this stage: it maps each
-redacted case to its plate/MJD/fibre (i.e. it is the de-anonymisation key). It
-is retained internally pending a provenance review.
+`data/truth/truth_real.json` holds the identity map and the catalogue flux values
+for the ten real and injected cases (6,787 bytes; SHA-256 `a57c7d07…`). It is
+**not** published. One identity is stated here instead, in §1.1: R06 is SDSS plate
+0294, MJD 51986, fibre 0036. The other five remain internal, as do every catalogue
+value in that file.
+
+### 1.1 The R06 identity, disclosed
+
+> **R06 = SDSS plate 0294, MJD 51986, fibre 0036** — SDSS DR18 prior-surveys,
+> `run2d=26`,
+> `spectro/redux/26/spectra/0294/spec-0294-51986-0036.fits`, archive SHA-256
+> `12e069c2cceb53459b49204f3f508aef3acdd704fd14a136c0b6449e8a118554`.
+
+**Why it is disclosed.** Two reasons, in order of weight.
+
+*It was already derivable.* §6 finding 3 recorded that the identities of five of
+the six real cases are reachable from published files. Re-checked at the V0.3
+review: matching `catalogue_z` in
+`validation/results/tables/archival_redshift.csv` against `zspec` in
+`data/provenance/sdss_source_picks.csv` gives a **unique** match for R01, R02, R03,
+R04 and R06. Only R05 is genuinely unidentified. Describing a derivable mapping as
+"withheld" was bookkeeping, not secrecy.
+
+*V0.3 ships a download workflow.* Once `tools/download_sdss.py` fetches this
+spectrum in one command, anyone who had inferred the mapping would be one command
+from the archive file. Leaving the statement implicit while making the checkers
+effortless would misrepresent what was being protected. The source is public
+observational data — SDSS Legacy spectra are in the public domain (§2) — so this
+discloses nothing that was ever private to the author.
+
+**What it establishes.** Identification only: that the case file is this archive
+spectrum and no other. It is checkable, and it was checked — the six `COADD`
+columns of `data/cases/R06.fits` are **bit-identical** to the archive file's, and
+`gspec measure` on the freshly downloaded spectrum reproduces the R06 row of
+`validation/results/golden_reference.csv` in every field. §3 records why the other
+five cases cannot be checked this way.
+
+**What it does not establish.** It is not validation of our fitted numbers. Those
+are judged against analytic synthetic truth (S01–S10), the differential injection
+identity (I01–I04), and an independent implementation — never against this object's
+catalogue values, which are other groups' measurements of the same photons:
+
+| | gspec | SDSS pipeline (`LINEAREA`) | MPA-JHU |
+|---|---|---|---|
+| redshift | 0.0812015 ± 0.0000355 | 0.08116169 (catalogue) | — |
+| Hα | 9.88 ± 5.03 — non-detection | 14.12 | 16.24 ± 1.88 |
+| Hβ | 56.3 ± 449.3 — non-detection | −0.62 | 2.70 ± 1.79 |
+| [N II] 6583 | 8.85 ± 1.80 | 10.30 | 8.98 ± 1.70 |
+| [O III] 5007 | 1.63 ± 2.56 — non-detection | 1.98 | 2.47 ± 1.92 |
+
+The redshift agrees with the survey's to 1.1 σ (11 km s⁻¹). The fluxes agree where
+a line is detected and mean nothing where it is not: for this object's Hβ, neither
+the survey pipeline nor the MPA catalogue measures a line either, which is the
+honest reading of a spectrum with median S/N ≈ 7. Knowing *which object* a case is
+says nothing about whether the measurement is any good, and on this object the
+measurement is not good for Hβ — see `docs/limitations.md` L2.
+
+**What remains withheld.** The identities of the other five cases (R05 in
+particular cannot be derived from published files), and every catalogue value in
+`truth_real.json`: 24 pipeline flux measurements and 24 MPA fluxes with their
+errors. None of them is needed by the workflow, and publishing them would present
+other groups' fits as reference truth standing beside ours.
 
 ## 2. The SDSS material
 
@@ -29,8 +88,14 @@ the SDSS DR18 Science Archive Server:
 
 ```
 https://data.sdss.org/sas/dr18/prior-surveys/sdss2-dr8-sdss/spectro/redux/26/
-        spectra/{plate}/spec-{plate}-{mjd}-{fiber:04d}.fits
+        spectra/{plate:04d}/spec-{plate:04d}-{mjd:05d}-{fiber:04d}.fits
 ```
+
+The plate is zero-padded to four digits in the **directory** as well as in the file
+name. Earlier versions of this page showed the directory unpadded; that path returns
+404 for plate 294, while the padded one returns 200. Corrected in V0.3, whose
+`tools/download_sdss.py` builds the padded form and validates every identifier
+before any URL exists.
 
 **Licence position, as stated by SDSS** (retrieved 2026-11-13):
 
@@ -81,6 +146,14 @@ verbatim from the SkyServer credits page:
   downloaded from.
 * The `run2d=26` Legacy spectroscopic reduction.
 
+### Retrieving the archive files
+
+Nothing under `data/raw/` is distributed, and that path is git-ignored: the archive
+files carry `SPECOBJ` and `SPZLINE` (the survey pipeline's own redshift and line
+fluxes) and would give away the answers the case files were redacted to remove.
+`tools/download_sdss.py` fetches them by identifier, verifies size and SHA-256, and
+converts them; the download workspace it writes is local and is never committed.
+
 ## 3. The redaction record
 
 The case files are **not** the archive files. `tools/make_injections.py` removes,
@@ -100,9 +173,10 @@ measuring:
 file belongs to.
 
 Consequence to be honest about: the case files are a *derived product*. They
-reproduce the SDSS flux calibration and noise, but a reader cannot verify them
-against the archive without the mapping in `truth_real.json` — which is why §1
-records its status.
+reproduce the SDSS flux calibration and noise, but a reader cannot check them
+against the archive without the mapping. For R06 that mapping is now published
+(§1.1), so that one case can be verified end to end against the archive file; for
+the other five it cannot, and the mapping stays internal.
 
 ## 4. How the synthetic data were made
 
@@ -166,7 +240,11 @@ and the synthetic cases from a documented seed.
    `validation/results/tables/archival_redshift.csv` carries the archive redshift
    for **all six**. What `truth_real.json` would add publicly is the identity of
    R05 and the pipe/MPA flux values quoted in the validation tables. That is a
-   decision for the release review, not a data-protection question.
+   decision for the release review, not a data-protection question. **Resolved at
+   the V0.3 review:** the R06 identity is now stated explicitly in §1.1, on the
+   grounds that it was derivable anyway and that a download workflow makes the
+   check trivial; the other five identities and all catalogue values remain
+   internal.
 
 ## 7. Storage precision (a limitation, not a detail)
 
@@ -189,3 +267,16 @@ Resolved at the v0.1 release review (2026-11-13):
 * **`data/provenance/case_provenance.csv`** (a per-case source table with
   plate/MJD/fibre, archive z and pipeline/MPA fluxes) is **not** shipped. The
   audit in §6 is reproducible without it once a download workflow exists (v0.3).
+
+Resolved at the v0.3 release review (2026-11-16):
+
+* **The R06 identity is disclosed** (§1.1): plate 0294, MJD 51986, fibre 0036.
+  Five of the six identities had already been derivable from `sdss_source_picks.csv`
+  and `archival_redshift.csv`, and V0.3 ships the tool that makes the remaining
+  check a single command. The other five identities, and every catalogue value in
+  `truth_real.json`, stay internal.
+* **`truth_real.json` is still not published** — inspected at this review (6,787
+  bytes, SHA-256 `a57c7d07…`): per case it holds plate/MJD/fibre, `specobjid`,
+  `release`, `run2d`, `sn_median`, `subclass`, `vdisp_kms`, the catalogue redshift
+  and its error, and per line the SDSS `LINEAREA` flux and the MPA-JHU flux with
+  its error. None of it is required by the V0.3 workflow.

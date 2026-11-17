@@ -77,6 +77,18 @@ which were assumed, and which were made by whom.
 
 ---
 
+## Phase 6 — retrieval workflow (v0.3)
+
+| # | decision | who | evidence |
+|---|---|---|---|
+| 6.1 | identifiers only; no catalogue query, so no selection function to declare | **[ASMD]** | design gate, HANDOVER/62 §F.8 |
+| 6.2 | keep network retrieval **outside** the validated package; no `gspec fetch` subcommand | **[ASMD]** | the HTTP layer would enter the module tree the numbers came from, for a convenience the script already gives |
+| 6.3 | the converter refuses an incompatible file rather than coercing it | [HERMES] | twelve contract checks; each has a test |
+| 6.4 | settle `wdisp`'s unit from the data (pixels vs ångström), not from memory | [HERMES] [MEASURED] | it falls 1.258→0.696 across the band while Δλ doubles; R 1466→2650 matches the Legacy curve |
+| 6.5 | correct the archive URL to the zero-padded plate | [HERMES] [MEASURED] | unpadded returns 404, padded returns 200 |
+| 6.6 | **disclose the R06 identity** (plate 0294, MJD 51986, fibre 0036) | **[ASMD]** | it was already derivable from `sdss_source_picks.csv` + `archival_redshift.csv` (5 of 6, uniquely), and v0.3 makes the check one command |
+| 6.7 | keep `truth_real.json` internal: five identities and all catalogue values stay unpublished | **[ASMD]** | inspected at the v0.3 review; nothing in it is needed by the workflow |
+
 ## Open questions
 
 | # | question | owner |

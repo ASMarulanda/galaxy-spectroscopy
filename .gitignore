@@ -17,6 +17,11 @@ htmlcov/
 
 out/
 *.tmp
+
+# V0.3 download workspace: archive files carry the survey pipeline's own answers
+# (SPECOBJ, SPZLINE) and are never redistributed, so nothing under data/raw ships.
+data/raw/
+*.fits.part
 validation/figures/*.png.tmp
 
 .DS_Store

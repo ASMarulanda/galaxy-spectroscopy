@@ -22,7 +22,7 @@ Public API
 
 from __future__ import annotations
 
-__version__ = "0.1.0"
+__version__ = "0.3.0"
 
 from . import constants, variants  # noqa: E402
 from .io import Case, clean, read_case  # noqa: E402

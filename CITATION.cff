@@ -6,7 +6,7 @@ abstract: >-
   integrated H-alpha, H-beta, [O III] 5008 and [N II] 6585 emission-line fluxes,
   and 1-sigma uncertainties from flux-calibrated optical spectra, by a joint fit
   of the H-alpha and H-beta complexes at a common redshift.
-version: 0.1.0
+version: 0.3.0
 date-released: 2026-11-13
 license: MIT
 authors:
