@@ -99,6 +99,13 @@ which were assumed, and which were made by whom.
 | 7.4 | remove the exact-baseline hash from CI; keep it as a printed fingerprint | **[ASMD]** | it asserted portability the project never claimed |
 | 7.5 | do **not** change the model to remove the flat direction | **[ASMD]** | that would change the numbers; recorded as O6 instead |
 
+## Phase 8 — V0.3.2 bound-aware flag comparison
+
+| # | decision | who | evidence |
+|---|---|---|---|
+| 8.1 | flags are compared exactly only where the line's complex has no active bound in **either** fit; on bound-sensitive rows each flag must instead agree with its own flux, uncertainty and broad amplitude | **[ASMD]** | V0.3.1 CI run 44381678782: S08 Hbeta `ok` vs `nondetection` between the reference fit and a refit on one stack; the flag follows sigma, and sigma on a pinned complex is not reproducible (L17) |
+| 8.2 | no case and no line is exempted by name; the split is derived from each result's `at_bounds` and guarded by a coverage floor | [HERMES] [MEASURED] | `tests/test_flag_policy.py` pins both branches, the floor, and that `reported_flag` is the published classifier rather than an S/N shortcut |
+
 ## Open questions
 
 | # | question | owner |

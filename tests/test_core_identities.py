@@ -15,6 +15,7 @@ import numpy as np
 import pytest
 
 import gspec
+from conftest import assert_flag_policy, bound_in_complex
 from gspec import constants as K
 from gspec.covariance import covariance, covariance_scale
 from gspec.fit import at_bounds
@@ -155,16 +156,50 @@ def test_refitting_at_the_reported_seed_agrees_on_z_and_flux(data_dir):
     this stack and 40.15 on the CI stack, a factor 3.5. Comparing that value would
     be comparing two branches of a truncation rule. The comparison is a
     characterisation test below, and the mechanism is in limitations L17.
+
+    **Flags follow the same rule as the uncertainty**, for the same reason. The flag
+    is assigned from ``|F| / sigma_F``, so wherever sigma is not reproducible the
+    flag is not either, and requiring two fits to agree on it would assert a
+    property of the BLAS build. Observed exactly that on GitHub's runner (run
+    44381678782): the reference fit and the refit of S08 disagreed on **Hbeta**,
+    ``ok`` against ``nondetection``, because its complex carries a pinned broad
+    amplitude and its S/N sits near the boundary. So where a bound is active in
+    either fit the two flags are *not* required to agree; each is instead required
+    to be the one its own flux, uncertainty and broad amplitude imply. Where no
+    bound is active the flags are still compared exactly, which is the stronger
+    claim and the one that would catch a real change in the classifier.
+
+    This is a scope correction, not a portability guarantee: it says nothing about
+    environments nobody has run.
     """
     case = gspec.read_case(data_dir / "cases" / "S08.fits")
     a = measure(case)
     b = measure_fixed_model(case, a.model, z_known=a.redshift)
 
     assert b.redshift == pytest.approx(a.redshift, rel=1e-4)
+
+    exact = consistency = 0
     for line in a.lines:
         assert b.lines[line].flux == pytest.approx(a.lines[line].flux, rel=1e-4)
-        assert b.lines[line].flag == a.lines[line].flag, \
-            f"{line}: flag changed between the reference fit and the refit"
+        if assert_flag_policy(a, b, line) == "exact":
+            exact += 1
+        else:
+            consistency += 1
+
+    # The policy must be applied to every line, and the split must be the one the
+    # bounds actually justify — not a name, and not a blanket exemption. On S08 both
+    # broad amplitudes are pinned, which puts all four complexes on the
+    # consistency path; if that ever changes, the exact comparison resumes by
+    # itself and this count moves with it.
+    expected = sum(1 for line in a.lines
+                   if bound_in_complex(a, line) or bound_in_complex(b, line))
+    assert exact + consistency == len(a.lines), "a line escaped the flag check"
+    assert consistency == expected, (
+        f"{consistency} lines took the bound-sensitive path but {expected} have a "
+        f"bound in their complex")
+    assert consistency >= 1, (
+        "no line took the bound-sensitive path, so this test no longer covers the "
+        "case it was written for (L17)")
 
 
 @pytest.mark.characterisation

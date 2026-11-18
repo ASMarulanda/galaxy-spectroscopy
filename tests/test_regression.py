@@ -56,7 +56,8 @@ import shutil
 
 import pytest
 
-from conftest import ALL_CASES, REAL, SYNTHETIC
+from conftest import (ALL_CASES, REAL, SYNTHETIC, assert_flag_coverage,
+                      bound_in_complex)
 
 FIELDS = ("redshift", "redshift_err", "flux", "flux_err")
 
@@ -70,14 +71,8 @@ REFERENCE_RTOL = 1e-6
 #: Parameters belong to the line complex they were fitted in, so a pinned amplitude
 #: makes the sigma of every line in that complex environment-sensitive. Measured: of
 #: 80 sigma rows, the 36 belonging to a complex with an active bound move by up to
-#: 3.5x between BLAS builds, and the other 44 stay within 2e-6 (L17).
-BOUND_COMPLEX = {"Halpha": ("Ha", "NII"), "Hbeta": ("Hb", "Hg"),
-                 "OIII_5007": ("OIII", "Hb", "Hg"), "NII_6583": ("NII", "Ha")}
-
-
-def _bound_in_complex(result, line: str) -> bool:
-    """Is a parameter of this line's own complex pinned at a bound?"""
-    return any(t in b for b in result.at_bounds for t in BOUND_COMPLEX.get(line, ()))
+#: 3.5x between BLAS builds, and the other 44 stay within 2e-6 (L17). The rule itself
+#: lives in ``conftest`` so that every test applies the same one.
 
 
 # ---------------------------------------------------------------- portable
@@ -104,7 +99,7 @@ def test_portable_baseline_regression(reference, golden_rows):
             gold = golden_rows[(cid, line)]
             got = reference[cid].row(line)
             for field in FIELDS:
-                if field in ("flux_err", "redshift_err") and _bound_in_complex(
+                if field in ("flux_err", "redshift_err") and bound_in_complex(
                         reference[cid], line):
                     sigma_skipped += 1
                     continue
@@ -117,7 +112,7 @@ def test_portable_baseline_regression(reference, golden_rows):
                 assert rel <= PORTABLE_RTOL[field], (
                     f"{cid}/{line}/{field}: {a!r} vs golden {b!r} "
                     f"(rel {rel:.2e} > {PORTABLE_RTOL[field]:.0e})")
-            if not _bound_in_complex(reference[cid], line):
+            if not bound_in_complex(reference[cid], line):
                 assert got["flag"] == gold["flag"], \
                     f"{cid}/{line}: flag {got['flag']} vs golden {gold['flag']}"
                 flags_compared += 1
@@ -131,9 +126,10 @@ def test_portable_baseline_regression(reference, golden_rows):
     assert sigma_compared >= 40, (
         f"only {sigma_compared} sigma rows compared ({sigma_skipped} excluded by "
         f"bounds); the bound exclusion has grown too far")
-    assert flags_compared >= 40, (
-        f"only {flags_compared} flags compared ({flags_skipped} excluded); a discrete "
-        f"decision is the last thing that should leave the portable suite")
+    assert flags_compared + flags_skipped == 4 * len(ALL_CASES), (
+        f"only {flags_compared + flags_skipped} of {4 * len(ALL_CASES)} rows "
+        f"reached the flag check")
+    assert_flag_coverage(flags_compared, 4 * len(ALL_CASES), 40)
     print(f"\n  worst portable drift: " +
           ", ".join(f"{k} {v[0]:.1e} ({v[1]})" for k, v in worst.items() if v[1]))
 

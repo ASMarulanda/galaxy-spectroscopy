@@ -181,6 +181,16 @@ And two discrete outputs move:
   environmental noise in χ², so the parsimony decision is a coin toss. The flux
   consequence is the 6.4e-4 above: I01 Hβ 185.4700 → 185.3509.
 
+The flag flip does not even need two environments. On GitHub's runner — a single
+stack — the reference fit and a refit of the same spectrum, from the same starting
+point, disagreed on S08 Hβ: `ok` against `nondetection` (run 44381678782). The two
+fits agreed on the redshift and on every flux; only the classification moved, because
+only σ moved. That is why flags are compared exactly only where a line's complex
+carries no active bound in *either* fit, and why on the remaining rows each flag is
+instead required to agree with the numbers its own result reports — a flag may differ
+between fits, but never from its own evidence. The rule, both branches of it and the
+coverage floor are pinned in `tests/test_flag_policy.py`.
+
 Three behaviours, then, and they need different tests.
 
 *Redshifts are stable* to 2e-8, and *χ² to 1e-11*. A different summation order inside

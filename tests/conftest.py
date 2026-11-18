@@ -15,6 +15,7 @@ from pathlib import Path
 import pytest
 
 import gspec
+from gspec.flags import classify
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
@@ -33,6 +34,72 @@ SYNTHETIC = tuple(f"S{i:02d}" for i in range(1, 11))
 REAL = tuple(f"R{i:02d}" for i in range(1, 7))
 INJECTED = tuple(f"I{i:02d}" for i in range(1, 5))
 ALL_CASES = tuple(sorted(SYNTHETIC + REAL + INJECTED))
+
+#: The parameters belonging to each line's fitting complex. A fit that pins one of
+#: them makes every line of that complex bound-sensitive: the covariance is fragile
+#: and the detection flag, which follows sigma, can move with it (`docs/limitations.md`
+#: L17). The mapping is a fact about the model, not about any case, and the decision
+#: below is taken from each result's own ``at_bounds`` — never from a case or line
+#: name. Shared so that every test applies one rule rather than a copy of one.
+BOUND_COMPLEX = {"Halpha": ("Ha", "NII"), "Hbeta": ("Hb", "Hg"),
+                 "OIII_5007": ("OIII", "Hb", "Hg"), "NII_6583": ("NII", "Ha")}
+
+
+def bound_in_complex(result, line: str) -> bool:
+    """Is a parameter of this line's own complex pinned at a bound?"""
+    return any(t in b for b in result.at_bounds for t in BOUND_COMPLEX.get(line, ()))
+
+
+def flags_comparable(a, b, line: str) -> bool:
+    """May two fits' flags be required to agree exactly for this line?
+
+    Only when *both* fits leave the line's complex free of an active bound. One
+    pinned amplitude is enough to make the flag follow a sigma that is not
+    reproducible, so equality there would be a claim about the BLAS build.
+    """
+    return not bound_in_complex(a, line) and not bound_in_complex(b, line)
+
+
+def reported_flag(result, line: str) -> str:
+    """The flag the published rule gives to this result's own numbers.
+
+    Reproduces the call in ``gspec/fit.py`` exactly — the same function with the
+    same three arguments, including the broad amplitude that drives the
+    ``unresolved_blend`` branch — so it tests the production rule instead of a
+    re-implementation of it.
+    """
+    line_measurement = result.lines[line]
+    return classify(line_measurement.flux, line_measurement.flux_err,
+                    line_measurement.broad_amplitude)
+
+
+def assert_flag_policy(a, b, line: str) -> str:
+    """Enforce the flag policy for one line, and say which rule was used.
+
+    Returns ``"exact"`` when the two flags were compared directly and
+    ``"consistency"`` when the line's complex is bound-sensitive in either fit, in
+    which case each flag is instead checked against the numbers its own result
+    reports — so a flag may differ between fits, but never from its own evidence.
+    """
+    if flags_comparable(a, b, line):
+        assert a.lines[line].flag == b.lines[line].flag, (
+            f"{line}: flag {a.lines[line].flag!r} vs {b.lines[line].flag!r} between "
+            f"two fits whose complex has no active bound")
+        return "exact"
+    for label, r in (("first fit", a), ("second fit", b)):
+        implied = reported_flag(r, line)
+        assert r.lines[line].flag == implied, (
+            f"{line}: the {label} reports {r.lines[line].flag!r} but its own flux "
+            f"and uncertainty imply {implied!r}")
+    return "consistency"
+
+
+def assert_flag_coverage(compared: int, total: int, minimum: int) -> None:
+    """The bound exclusion must not swallow the comparison it exists to scope."""
+    if compared < minimum:
+        raise AssertionError(
+            f"only {compared} of {total} flags were compared exactly (floor "
+            f"{minimum}); the bound exclusion has grown too far")
 
 
 @pytest.fixture(scope="session")
