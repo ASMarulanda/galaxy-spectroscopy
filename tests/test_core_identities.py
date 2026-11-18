@@ -135,20 +135,50 @@ def test_measure_is_deterministic(data_dir):
         assert a.lines[line].flux_err == b.lines[line].flux_err
 
 
-def test_refitting_at_the_reported_seed_agrees_to_1e_minus_4(data_dir):
-    """The property every controlled experiment relies on.
+def test_refitting_at_the_reported_seed_agrees_on_z_and_flux(data_dir):
+    """The property every controlled experiment relies on — the portable part.
 
-    Re-fitting the *selected* model at the *reported* redshift must land on the
-    same solution. It does not reproduce it bit for bit — the optimiser starts
-    somewhere else and stops at a slightly different point — so the tolerance is
-    1e-4 relative, not zero. Measured: 1e-8 to 1e-6 in flux, 1e-5 in sigma.
+    Re-fitting the *selected* model at the *reported* redshift must land on the same
+    solution: same redshift, same fluxes, same flags. It does not reproduce them bit
+    for bit — the optimiser starts somewhere else and stops at a slightly different
+    point — so the tolerance is 1e-4 relative. Measured on the reference stack: 1e-8
+    to 1e-6 in flux; on a wheel-based environment, 8e-7.
+
+    The scope is narrow and it is not the general cross-environment threshold: this
+    compares two fits of the same spectrum on the *same* stack, never the measurement
+    against the golden baseline. The baseline comparison, and the 1e-3 bound that
+    governs it, is in ``tests/test_regression.py``.
+
+    The **uncertainty is deliberately not compared here.** On S08 the covariance
+    contains a direction whose curvature is at floating-point level, and whether the
+    pseudo-inverse keeps it is decided by the last digits: sigma(Halpha) is 11.50 on
+    this stack and 40.15 on the CI stack, a factor 3.5. Comparing that value would
+    be comparing two branches of a truncation rule. The comparison is a
+    characterisation test below, and the mechanism is in limitations L17.
     """
     case = gspec.read_case(data_dir / "cases" / "S08.fits")
     a = measure(case)
     b = measure_fixed_model(case, a.model, z_known=a.redshift)
+
     assert b.redshift == pytest.approx(a.redshift, rel=1e-4)
     for line in a.lines:
         assert b.lines[line].flux == pytest.approx(a.lines[line].flux, rel=1e-4)
+        assert b.lines[line].flag == a.lines[line].flag, \
+            f"{line}: flag changed between the reference fit and the refit"
+
+
+@pytest.mark.characterisation
+def test_refitting_at_the_reported_seed_reproduces_the_uncertainty(data_dir):
+    """Reference environment only: the same sigma from the same spectrum.
+
+    Measured 1e-5 relative here. It does not hold across environments — on S08 the
+    value is bimodal (11.50 / 40.15) because of the pseudo-inverse truncation
+    boundary — which is why it is a characterisation test and not a portable one.
+    """
+    case = gspec.read_case(data_dir / "cases" / "S08.fits")
+    a = measure(case)
+    b = measure_fixed_model(case, a.model, z_known=a.redshift)
+    for line in a.lines:
         assert b.lines[line].flux_err == pytest.approx(a.lines[line].flux_err, rel=1e-3)
 
 

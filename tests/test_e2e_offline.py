@@ -84,14 +84,21 @@ def test_end_to_end_reproduces_the_validated_baseline(make_raw, tmp_path, baseli
     measured = gspec.measure(gspec.read_case(case_path))
     assert measured.case_id == "SDSS-0294-51986-0036"
 
+    # Portable: the numbers land on the baseline within tolerances that hold on any
+    # machine (see tests/test_regression.py for where the numbers come from). The
+    # exact-digit comparison is a characterisation test below.
     for line in measured.lines:
         row = measured.row(line)
         expected = baseline_rows[row["line"]]
-        for field in FIELDS:
-            v = row[field]
-            got = f"{v:.10g}" if isinstance(v, float) else str(v)
-            assert got == expected[field], (
-                f"{line}.{field}: measured {v!r} vs baseline {expected[field]!r}")
+        assert row["flag"] == expected["flag"], f"{line}: flag moved"
+        for field, rtol in (("redshift", 1e-6), ("flux", 1e-3)):
+            a, b = float(row[field]), float(expected[field])
+            assert abs(a - b) <= rtol * max(abs(a), abs(b)), \
+                f"{line}.{field}: {a!r} vs baseline {b!r}"
+        if not measured.at_bounds:
+            a, b = float(row["flux_err"]), float(expected["flux_err"])
+            assert abs(a - b) <= 1e-4 * max(abs(a), abs(b)), \
+                f"{line}.flux_err: {a!r} vs baseline {b!r}"
 
     # and the same thing through the CSV writer, which is what a reader compares
     from gspec.cli import measure_directory
@@ -102,8 +109,10 @@ def test_end_to_end_reproduces_the_validated_baseline(make_raw, tmp_path, baseli
     assert len(rows) == 4
     for r in rows:
         expected = baseline_rows[r["line"]]
-        for field in FIELDS:
-            assert r[field] == expected[field]
+        assert r["flag"] == expected["flag"]
+        for field, rtol in (("redshift", 1e-6), ("flux", 1e-3)):
+            a, b = float(r[field]), float(expected[field])
+            assert abs(a - b) <= rtol * max(abs(a), abs(b))
 
 
 def test_cli_runs_the_whole_workflow_and_writes_provenance(make_raw, tmp_path,
@@ -138,11 +147,13 @@ def test_cli_runs_the_whole_workflow_and_writes_provenance(make_raw, tmp_path,
     assert prov["sha256"] == conv["source"]["sha256"] == obj["sha256"]
     assert conv["case"]["sha256"] == obj["case"]["sha256"]
 
-    # and the measured numbers are the baseline's
+    # and the measured numbers are the baseline's, within portable tolerances
     with open(tmp_path / "work" / "measurements.csv", newline="") as fh:
         for r in csv.DictReader(fh):
             expected = baseline_rows[r["line"]]
-            assert r["flux"] == expected["flux"]
+            a, b = float(r["flux"]), float(expected["flux"])
+            assert abs(a - b) <= 1e-3 * max(abs(a), abs(b)), \
+                f"{r['line']}: {a!r} vs baseline {b!r}"
             assert r["flag"] == expected["flag"]
 
 
@@ -182,3 +193,32 @@ def test_raw_and_case_hold_the_same_six_columns(make_raw, tmp_path):
     assert {c.name for c in fits.open(raw)[1].columns} - set(fits_to_case.CASE_COLUMNS) \
         == {"sky", "model"}
     assert [c.name for c in fits.open(case)[1].columns] == list(fits_to_case.CASE_COLUMNS)
+
+
+@pytest.mark.characterisation
+def test_end_to_end_reproduces_the_baseline_digit_for_digit(make_raw, tmp_path,
+                                                           baseline_rows):
+    """Reference environment only: every printed digit equals the baseline row.
+
+    The portable test above allows 1e-3 on flux and 1e-6 on redshift; this one
+    allows nothing. It holds on the stack the baseline was produced on and not on
+    the wheel-based environment CI uses, which drifts in the 8th-10th digit and, on
+    bound-pinned sigma rows, onto a different branch of the pseudo-inverse
+    truncation rule (limitations L17).
+    """
+    raw = make_raw()
+    opener = ServingOpener(raw.read_bytes())
+    out = tmp_path / "run"
+    result = D.fetch_one(294, 51986, 36, out / "raw", opener=opener)
+    case_path = out / "cases" / "spec-0294-51986-0036.fits"
+    fits_to_case.convert(result.path, case_path)
+
+    measured = gspec.measure(gspec.read_case(case_path))
+    for line in measured.lines:
+        row = measured.row(line)
+        expected = baseline_rows[row["line"]]
+        for field in FIELDS:
+            v = row[field]
+            got = f"{v:.10g}" if isinstance(v, float) else str(v)
+            assert got == expected[field], \
+                f"{line}.{field}: measured {v!r} vs baseline {expected[field]!r}"
