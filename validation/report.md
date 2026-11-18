@@ -241,7 +241,8 @@ it happens to survive. See `docs/limitations.md` L3.
 python -m venv --system-site-packages .venv && source .venv/bin/activate
 pip install -e ".[dev]"
 
-pytest                                                    # 105 tests, ~240 s
+pytest                                    # 212 tests, ~4 min (the portable 202:
+                                          #   pytest -m "not characterisation")
 gspec measure --cases data/cases --out out/line_measurements.csv
 diff <(sort out/line_measurements.csv) \
      <(sort validation/results/golden_reference.csv)       # identical

@@ -89,6 +89,16 @@ which were assumed, and which were made by whom.
 | 6.6 | **disclose the R06 identity** (plate 0294, MJD 51986, fibre 0036) | **[ASMD]** | it was already derivable from `sdss_source_picks.csv` + `archival_redshift.csv` (5 of 6, uniquely), and v0.3 makes the check one command |
 | 6.7 | keep `truth_real.json` internal: five identities and all catalogue values stay unpublished | **[ASMD]** | inspected at the v0.3 review; nothing in it is needed by the workflow |
 
+## Phase 7 — V0.3.1 CI remediation
+
+| # | decision | who | evidence |
+|---|---|---|---|
+| 7.1 | split the suite into *portable* and *characterisation*; CI runs the portable half | **[ASMD]** | v0.3.0 CI failed 6/195; reproduced exactly on a wheel-based venv |
+| 7.2 | tolerances from measurement, not from the failure: redshift 1e-6, flux 1e-3, sigma/error columns 1e-4 | [HERMES] [MEASURED] | worst observed cross-environment flux drift 6.4e-4 (I01 Hbeta, model-sweep case), so 1e-3 is 1.6x above it and 60x below the 6 % accuracy floor; real scientific changes move values by 1e-3..1e-1 |
+| 7.3 | sigma is compared only for lines whose complex has no active bound | [HERMES] [MEASURED] | 36 of 80 sigma rows move up to 3.5x; the other 44 stay within 2e-6 |
+| 7.4 | remove the exact-baseline hash from CI; keep it as a printed fingerprint | **[ASMD]** | it asserted portability the project never claimed |
+| 7.5 | do **not** change the model to remove the flat direction | **[ASMD]** | that would change the numbers; recorded as O6 instead |
+
 ## Open questions
 
 | # | question | owner |
@@ -98,3 +108,4 @@ which were assumed, and which were made by whom.
 | O3 | is the 3-line absorption approximation salvageable with a different parameterisation? | future work |
 | O4 | broad-line AGN decomposition: untested, and R05 shows why | future work |
 | O5 | would a reliability classifier beat the `σ/F < 3` rule? | planned, exploratory |
+| O6 | a broad component pinned at zero amplitude keeps a free width, leaving an unconstrained direction that sigma charges for — remove the component, tie the width to the amplitude, or price it out of the covariance? | open, measured in L17; a model change, so not a maintenance-release fix |

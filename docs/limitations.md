@@ -154,3 +154,95 @@ statement, no reddening law and no classification follows from n = 2. R01's
 A_V = 1.92 rests on an Hβ that this document (L2, L3) calls the least reliable
 number the pipeline produces: a 20 % low Hβ moves it to 2.62. The *measured*
 statement is the 3.3σ excess over case B, not the extinction.
+
+**L17 — The numbers reproduce on this stack, not across BLAS builds.**
+V0.3.0's CI ran the suite on GitHub's `ubuntu-latest` (numpy 1.26.4 wheel, bundled
+OpenBLAS) and 6 of 195 tests failed. Reproduced exactly on a wheel-based virtualenv
+here — the same six tests, the same numbers — so the cause is the linear-algebra
+build, not the runner.
+
+How far apart, measured across all 80 rows of the baseline (wheel stack against the
+reference stack):
+
+| field | worst relative | where | rows over 1e-4 | over 1e-3 |
+|---|---|---|---|---|
+| redshift | 2.0e-8 | I01 Hα | 0 | 0 |
+| flux | **6.4e-4** | I01 Hβ | 2 | 0 |
+| `redshift_err` | 5.0e-3 | S04 Hα | 8 | 4 |
+| `flux_err` | **7.1e-1** | S08 Hα | 13 | 11 |
+
+And two discrete outputs move:
+
+* **one flag flips** — S08 Hβ is `ok` on the reference stack and `nondetection` on the
+  wheel stack, because its σ moves by 2.6× and the classification follows σ;
+* **the model-selection sweep lands on a different configuration for 2 of 20 cases**
+  (R01 and I01: `with-abs, ndeg=3` versus `with-abs, ndeg=3, no broad Ha`). The χ²
+  difference between those two candidates is ~1e-4 — a margin smaller than the
+  environmental noise in χ², so the parsimony decision is a coin toss. The flux
+  consequence is the 6.4e-4 above: I01 Hβ 185.4700 → 185.3509.
+
+Three behaviours, then, and they need different tests.
+
+*Redshifts are stable* to 2e-8, and *χ² to 1e-11*. A different summation order inside
+the least-squares kernel moves the solution in its last digits, and on 78 of 80 rows
+that is the whole of it.
+
+*Fluxes are stable on 78 of 80 rows* (to ~1e-6) and move by **6.4e-4** on the two
+where the model-selection sweep chose differently (above). That is 0.064 % — 100×
+below the smallest accuracy floor in this project (6 % for [O III]) — but it is not
+rounding, and the portable tolerance has to accommodate it.
+
+*σ on bound-pinned rows is not stable at all*, by up to a factor of 3.5, and it drags
+a flag with it. The mechanism, measured on S08 rather than asserted:
+
+1. The model carries a broad component in each line complex whose amplitude the fit
+   drives to zero — `amp_Ha_b = 1.6e-12`, `amp_Hb_b = 3.5e-21`, both at their bound,
+   both reported in `at_bounds`.
+2. Its **width** (`broad`) is therefore unconstrained by the data. At `broad = 5.53`
+   and `broad = 7.50` — a 26 % difference — χ² is identical to **1.6e-11**. The
+   parameter is unidentifiable, and the optimiser stops wherever it enters that flat
+   valley.
+3. The width still sets the *coupling* between the broad and narrow amplitudes.
+   Along the valley the second-smallest eigenvalue of JᵀJ moves from **7.7e-3 to
+   1.3e-1** (17×), in the direction of the broad/narrow Hβ split.
+4. σ = sqrt(gᵀCg) inherits that change, and moves by 3.5× — while every reported
+   flux, the redshift and χ² are identical.
+5. The flag follows σ. `classify()` compares the flux with its own uncertainty, so a
+   2.6× larger σ turns S08's Hβ from `ok` into `nondetection`. A discrete scientific
+   output moves because a continuous one did.
+
+The pseudo-inverse truncation is *not* the culprit: both stacks drop the same
+direction (the one at eigenvalue ~1e-15 dominated by `broad`). What differs is where
+in the valley the optimiser lands, and that is decided by the last digits of a BLAS
+kernel.
+
+**What the golden baseline guarantees, and what it does not.** It guarantees that on
+the reference stack the pipeline produces these exact numbers, so any change in the
+code that moves them is visible (`characterisation` tests). It does **not** guarantee
+that another environment produces them. Until V0.3.1 the suite asserted the stronger
+claim — including a CI step that required the baseline hash to match — which was a
+defect in the tests, not a property of the pipeline.
+
+**Which tests are portable, and which are not.**
+
+| suite | runs | asserts |
+|---|---|---|
+| `pytest -m "not characterisation"` | either stack measured, and in CI | redshift to 1e-6; flux to 1e-3; σ, `redshift_err` and `flux_err` to their baseline values on the 44 rows whose line complex has no active bound (of 80); flags on those same rows; the covariance *rule* (analytic), finiteness, positive semi-definiteness, bound reporting; that each flag is consistent with the flux and σ the same result reports, everywhere; accuracy against analytic truth within the acceptance floors; failure handling |
+| `pytest -m characterisation` | the reference stack only | the golden baseline to its printed digits, and σ on every row |
+
+Tolerances and their justification are in `tests/test_regression.py`. **None of them is
+a portability guarantee.** The flux bound (1e-3) is 1.6× the largest cross-environment
+flux drift measured (6.4e-4); the redshift bound (1e-6) is 50× above its drift (2e-8),
+which leaves real room. The error columns are compared only on rows whose complex has
+no active bound, because on bound rows their drift reaches 5e-3 (`redshift_err`) and
+7.1e-1 (`flux_err`). The 202 tests run on both stacks that
+have been examined because they assert what was measured to hold across those two — not
+because the numbers are shown to reproduce everywhere, which would need stacks nobody
+has run.
+
+**What is deliberately not fixed.** A component pinned at zero amplitude keeps a
+free width, which is where the flat direction comes from. Removing it would change
+the model and therefore the numbers, so it is recorded as open question O6 rather
+than changed in a maintenance release. Nothing here claims that σ is reproducible
+across BLAS builds, or that it is calibrated — calibration is a separate question,
+tested by pull distributions within a stack (`tests/test_uncertainty.py`).
