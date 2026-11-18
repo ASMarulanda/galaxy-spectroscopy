@@ -1,8 +1,26 @@
 name: tests
 
-# The suite is offline by construction: the network is replaced by fakes in
-# tests/test_fetch.py, and the one end-to-end test serves bytes from a local
-# fixture. Nothing here downloads SDSS data, and no secret is used.
+# Two kinds of test live in this repository, and CI runs exactly one kind.
+#
+#   portable        — true on any machine: the FITS contract, the conversion that
+#                     preserves columns bit for bit, provenance, accuracy against
+#                     analytic truth within the acceptance floors, flags, the
+#                     covariance *rule*, failure handling, scientific invariants.
+#                     Tolerances are chosen from measurement (tests/test_regression.py
+#                     documents each one) and sit 10x-1000x below the size of a real
+#                     scientific change.
+#
+#   characterisation — pins the golden baseline to its printed digits. True on the
+#                     stack the numbers were produced on and nowhere else: the fitted
+#                     numbers are not bit-reproducible across BLAS builds, and on
+#                     bound-pinned rows sigma moves by a factor of several
+#                     (docs/limitations.md L17). Run them locally with:
+#
+#                         pytest -m characterisation
+#
+# The suite is offline: the network is replaced by fakes in tests/test_fetch.py, and
+# the end-to-end test serves bytes from a local fixture. Nothing here downloads SDSS
+# data, and no secret is used.
 on:
   push:
     branches: [main]
@@ -13,9 +31,9 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  portable:
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 25
 
     steps:
       - uses: actions/checkout@v4
@@ -40,12 +58,24 @@ jobs:
           print('scipy', scipy.__version__); \
           print('astropy', astropy.__version__)"
 
-      - name: Test suite
-        run: pytest -q
+      - name: Portable scientific verification
+        run: pytest -m "not characterisation" -q
 
-      - name: The scientific baseline still reproduces
-        # Not a network step: this measures the twenty bundled cases and compares
-        # the CSV with the published baseline hash.
+      - name: Deselected reference-environment tests
+        # Printed so the gap between what CI runs and what exists is never invisible.
+        run: |
+          echo "characterisation tests kept out of CI:"
+          pytest -m characterisation --collect-only -q | tail -3
+
+      - name: Baseline fingerprint — reported, not asserted
+        # The exact hash is a statement about this runner's BLAS build, so it is
+        # printed for the record instead of failing the build. What must hold
+        # everywhere is asserted by test_portable_baseline_regression.
         run: |
           gspec measure --cases data/cases --out /tmp/baseline.csv --quiet
-          python -c "import hashlib, sys; g = hashlib.sha256(open('/tmp/baseline.csv','rb').read()).hexdigest(); print('baseline sha256:', g); sys.exit(0 if g.startswith('460913a261a8ebecd88b89d6') else 'BASELINE DRIFT')"
+          python -c "import hashlib; \
+          g = hashlib.sha256(open('/tmp/baseline.csv','rb').read()).hexdigest(); \
+          ref = '460913a261a8ebecd88b89d63266c87d0f1ad906c71ff2fa8907d4fb76a2211d'; \
+          print('measured :', g); \
+          print('reference:', ref); \
+          print('identical' if g == ref else 'differs — expected on a different BLAS build; see docs/limitations.md L17')"
